@@ -1,8 +1,17 @@
-# README #
+# Oppimispäiväkirja #
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-### What is this repository for? ###
+### Viikko 1 ###
+
+Lähtökohta on sellainen, että ohjelmointikokemusta on 30+ vuotta pääosin asm,C,Java,C##,R -kielillä. Tarkoitus on oppia nettipuolen ohjelmoinnin perusteita ja saada aikaan muutama
+valmis aihio, joista voi sitten lähteä tekemään esim. IoT-kokeiluja. 
+
+Ensimmäinen viikko meni työkaluvaihtoehtoja ihmetellessä. Luulenpa että gitpod tarjoaa kätevimmän ja skaalautuvimman tavana edetä.
+
+
+
+
 
 * Quick summary
 * Version
