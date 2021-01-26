@@ -9,30 +9,10 @@ valmis aihio, joista voi sitten lähteä tekemään esim. IoT-kokeiluja.
 
 Ensimmäinen viikko meni työkaluvaihtoehtoja ihmetellessä. Luulenpa että gitpod tarjoaa kätevimmän ja skaalautuvimman tavana edetä.
 
+### Viikko 2 ###
 
+Node.js crash course notes:
+* kätevä platformi, ksoka ei tarvitse pohtia säikeitä ja synkronointia
+* JS-kieli ei alkuun vaikuta hankalalta. Syntaksi on tutun oloinen
+* Alkuun suurin haaste on löytää mahdollisimman valmiit palat kirjastoista
 
-
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
