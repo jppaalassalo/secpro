@@ -12,7 +12,8 @@ Ensimmäinen viikko meni työkaluvaihtoehtoja ihmetellessä. Luulenpa että gitp
 ### Viikko 2 ###
 
 Node.js crash course notes:
-* kätevä platformi, ksoka ei tarvitse pohtia säikeitä ja synkronointia
-* JS-kieli ei alkuun vaikuta hankalalta. Syntaksi on tutun oloinen
+* kätevä platformi, koska ei tarvitse pohtia säikeitä ja synkronointia
+* JS-kieli ei alkuun vaikuta hankalalta. Syntaksi on tutun oloinen. Anonyymi funktio ei tule heti selkärangasta.
 * Alkuun suurin haaste on löytää mahdollisimman valmiit palat kirjastoista
+Kirjoittelin demokoodeja mukana aina kun keksin jotain kokeiltavaa.
 

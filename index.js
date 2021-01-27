@@ -1,6 +1,10 @@
-console.log('Hello');
-const person =require('./person.js');
-const path=require ('path');
-console.log(person);
-console.log(__filename);
-console.log(path.basename(__filename));
+const http = require('http');
+
+http.createServer((req, res) => {
+    if(req.url==='/') {
+        console.log('requested', req.url);
+        res.writeHead(200, { 'Content-Type': 'text/html'});
+        res.write('<h1>Hello2</h1>');
+        res.end()
+    }
+}).listen(5000, ()=> console.log('server up'));
