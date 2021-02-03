@@ -15,6 +15,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/jppaalas/fullstack#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

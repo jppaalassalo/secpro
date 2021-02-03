@@ -1,10 +1,8 @@
-const http = require('http');
-
-http.createServer((req, res) => {
-    if(req.url==='/') {
-        console.log('requested', req.url);
-        res.writeHead(200, { 'Content-Type': 'text/html'});
-        res.write('<h1>Hello2</h1>');
-        res.end()
-    }
-}).listen(5000, ()=> console.log('server up'));
+const express = require('express');
+const path = require('path');
+const app = express();
+const PORT = process.env.port || 5000
+app.get('/', (req,res) => {
+  res.send('<h1>Hello W2</h1>');
+});
+app.listen(PORT, () => console.log('Server started'));
