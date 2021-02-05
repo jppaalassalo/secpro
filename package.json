@@ -16,6 +16,7 @@
   "homepage": "https://bitbucket.org/jppaalas/fullstack#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "moment": "^2.29.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
