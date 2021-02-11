@@ -1,19 +1,20 @@
 const express = require('express');
 const path = require('path');
-const moment = require('moment');
-
+const logger = require('./middleware/logger');
 const app = express();
+const router = express.Router();
 
-// middleware
-const logger = (req, res, next) => {
-    console.log(`${req.protocol}://${req.get('host')}${req.originalUrl}: ${moment().format()}`)
-    //console.log('Hello');
-    next();
-}
 app.use(logger);
+// Body parser middelelware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false}));
+
+
 app.use(express.static(path.join(__dirname, 'public')));
-// app.get('/', (req,res) => {
-//  res.send('<h1>Hello W2</h1>');
-//});
+ app.get('/', (req,res) => {
+  res.send('<h1>Hello W2</h1>');
+});
+
+app.use('/api/members', require('./routes/api/members'));
 const PORT = process.env.port || 5000
 app.listen(PORT, () => console.log('Server started'));
