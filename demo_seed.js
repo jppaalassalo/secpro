@@ -5,11 +5,13 @@ seeder.connect('mongodb://demo:demo@10.99.30.233:27017/demo', { useUnifiedTopolo
  
   // Load Mongoose models
   seeder.loadModels([
-    'models/task.js'
+    'models/task.js',
+    'models/user.js',
+    'models/book.js'
   ]);
  
   // Clear specified collections
-  seeder.clearModels(['Task'], function() {
+  seeder.clearModels(['Task', 'Book', 'User'], function() {
  
     // Callback to populate DB once collections have been cleared
     seeder.populateModels(data, function() {
@@ -22,6 +24,27 @@ seeder.connect('mongodb://demo:demo@10.99.30.233:27017/demo', { useUnifiedTopolo
 // Data array containing seed data - documents organized by Model
 var data = [
     {
+      'model': 'User',
+      'documents': [
+          { '_id': '#9847598', 'userName': 'admin', 'passwd': 'demo'},
+          { '_id': '#7598237', 'userName': 'ZP', 'passwd': 'demo'},
+          { '_id': '#1243218', 'userName': 'Ode', 'passwd': 'demo'}
+      ] 
+    },
+    {
+      'model': 'Book',
+      'documents': [
+          { 
+            'bookName': 'Kaunasin sivut',
+            'author': 'Jyrki Erra',
+            'rating': 3,
+            'comment': 'Tavoittaa mainiosti umbertoecomaisen hidassoutuisuuden.',
+            'reader': "#7598237",
+            'taskId': "3"
+          }
+      ] 
+    },
+    {  
         'model': 'Task',
         'documents': [
             { 'year': 2021, 'listIndex': 1, 'descr': 'Kirjassa kirjoitetaan päiväkirjaa' },
