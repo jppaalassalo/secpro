@@ -30,7 +30,7 @@ router.get('/:id', (req, res) => {
 
 // Create book
 router.post('/', (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     const newBook = new Book ({
         id: uuid.v4(),
         bookName: req.body.bookName,
@@ -50,5 +50,33 @@ router.post('/', (req, res) => {
     res.json(newBook);
 });
 
+//update
+router.put('/:id', (req, res) => {
+    const newBook = new Book ({
+        _id: req.body._id,
+        bookName: req.body.bookName,
+        author: req.body.author,
+        rating: req.body.rating,
+        reader: req.userId,
+        taskId: req.body.taskId,
+        comment: req.body.comment
+    });
+    newBook.isNew=false;
+    newBook.save(function (err, book) {
+        if (err) return console.error(err);
+        console.log(newBook.bookName + " updated in bookstore collection.");
+      });
+    res.json(newBook);
+});
+
+//delete book
+router.delete('/:id', (req, res) => {
+    Book.deleteOne({ _id: req.body._id }, function(err){
+        if (err) res.status(400).json({msg: `Book id not found ${req.params._id}`})
+        else res.json({ 
+            msg : 'Book deleted'
+        });
+    });  
+});
 
 module.exports = router;
