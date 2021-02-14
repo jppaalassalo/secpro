@@ -1,7 +1,7 @@
 var seeder = require('mongoose-seed');
  
 // Connect to MongoDB via Mongoose
-seeder.connect(('mongodb://demo:demo@10.99.30.233:27017/demo', function() {
+seeder.connect('mongodb://demo:demo@10.99.30.233:27017/demo', { useUnifiedTopology: true }, function() {
  
   // Load Mongoose models
   seeder.loadModels([

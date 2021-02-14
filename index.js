@@ -8,11 +8,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://demo:demo@10.99.30.233:27017/demo', {useNewUrlParser: true, useUnifiedTopology: true});
 
-const Cat = mongoose.model('Cat', { name: String });
-
-const kitty = new Cat({ name: 'Zildjian' });
-kitty.save().then(() => console.log('meow'));
-
 
 // handlebars middleware
 app.engine('handlebars', exph({defaulLayout: 'main'}));
@@ -30,5 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.use('/api/members', require('./routes/api/members'));
+app.use('/api/tasks', require('./routes/api/tasks'));
+
 const PORT = process.env.port || 5000
 app.listen(PORT, () => console.log('Server started'));
