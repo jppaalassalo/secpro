@@ -1,0 +1,54 @@
+const express = require('express');
+const router = express.Router();
+const Book = require('../../models/book');
+const uuid = require('uuid');
+
+// gets all books
+router.get('/', (req, res) => {
+    Book.find({}).exec(function(err, docs) {
+        if (!err) { 
+            res.send(docs);
+        }
+        else {
+            throw err;
+        }
+    });
+});
+
+//get one book
+router.get('/:id', (req, res) => {
+    //res.send(req.params.id);
+    Book.find({ _id: parseInt(req.params.id)}).exec(function(err, docs) {
+        if (!err) { 
+            res.send(docs);
+        }
+        else {
+            res.status(400).json({msg: `book not found ${req.params.id}`});
+        }
+    });
+});
+
+// Create book
+router.post('/', (req, res) => {
+    console.log(req.body);
+    const newBook = new Book ({
+        id: uuid.v4(),
+        bookName: req.body.bookName,
+        author: req.body.author,
+        rating: req.body.rating,
+        reader: req.userId,
+        taskId: req.body.taskId,
+        comment: req.body.comment
+    });
+    if(!newBook.bookName) {
+        return res.status(400).json('Book name missing');
+    }
+    newBook.save(function (err, book) {
+        if (err) return console.error(err);
+        console.log(newBook.bookName + " saved to bookstore collection.");
+      });
+    res.json(newBook);
+});
+
+
+module.exports = router;

@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/members', require('./routes/api/members'));
 app.use('/api/tasks', require('./routes/api/tasks'));
+app.use('/api/books', require('./routes/api/books'));
 
 const PORT = process.env.port || 5000
 app.listen(PORT, () => console.log('Server started'));
