@@ -1,7 +1,6 @@
 const express = require('express');
 const exph = require('express-handlebars');
 const router = express.Router();
-//const tasks = require('../../Tasks');
 const Task = require('../../models/task');
 const uuid = require('uuid');
 
