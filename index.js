@@ -5,6 +5,15 @@ const logger = require('./middleware/logger');
 const app = express();
 const router = express.Router();
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://demo:demo@10.99.30.233:27017/demo', {useNewUrlParser: true, useUnifiedTopology: true});
+
+const Cat = mongoose.model('Cat', { name: String });
+
+const kitty = new Cat({ name: 'Zildjian' });
+kitty.save().then(() => console.log('meow'));
+
+
 // handlebars middleware
 app.engine('handlebars', exph({defaulLayout: 'main'}));
 app.set('view engine', 'handlebars');
