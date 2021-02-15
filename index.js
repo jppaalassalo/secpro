@@ -1,4 +1,5 @@
 const express = require('express');
+var cors = require('cors');
 const exph = require('express-handlebars');
 const path = require('path');
 const logger = require('./middleware/logger');
@@ -13,6 +14,7 @@ mongoose.connect('mongodb://demo:demo@10.99.30.233:27017/demo', {useNewUrlParser
 app.engine('handlebars', exph({defaulLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+app.use(cors());
 app.use(logger);
 // Body parser middelelware
 app.use(express.json());
