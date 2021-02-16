@@ -7,18 +7,20 @@ const querystring = require('querystring');
 
 // gets all books
 router.get('/', (req, res) => {
-    const user = req.query.username;
-    console.log(user);
-    const userid = User.findOne({userName: user}).exec((err,docs) => {
-        return(docs);
-    } );
-    console.log(userid);
-    Book.find({}).exec(function(err, docs) {
-        if (!err) { 
-            res.send(docs);
-        }
-        else {
-            throw err;
+    const username = req.query.username;
+    console.log(username);
+    User.findOne({userName: username}).then ((user) => {
+        if(user===null){
+            res.status(400).json({msg: `user not found ${username}`});
+        } else { 
+            Book.find({reader: user._id}).exec(function(err, docs) {
+                if (!err) { 
+                    res.send(docs);
+                }
+                else {
+                    throw err;
+                }
+            });
         }
     });
 });
