@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
   res.send('<h1>Hello W2</h1>');
 });
 
-app.use('/api/members', require('./routes/api/members'));
+app.use('/api/users', require('./routes/api/users'));
 app.use('/api/tasks', require('./routes/api/tasks'));
 app.use('/api/books', require('./routes/api/books'));
 

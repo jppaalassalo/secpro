@@ -1,10 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../../models/book');
+const User = require('../../models/user');
 const uuid = require('uuid');
+const querystring = require('querystring');
 
 // gets all books
 router.get('/', (req, res) => {
+    const user = req.query.username;
+    console.log(user);
+    const userid = User.findOne({userName: user}).exec((err,docs) => {
+        return(docs);
+    } );
+    console.log(userid);
     Book.find({}).exec(function(err, docs) {
         if (!err) { 
             res.send(docs);
