@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChallengeService } from 'src/app/services/challenge.service';
 import { Challenge } from '../../models/Challenge' 
 @Component({
   selector: 'app-challenges',
@@ -7,13 +8,11 @@ import { Challenge } from '../../models/Challenge'
 })
 export class ChallengesComponent implements OnInit {
   challenges:Challenge[];
-  constructor() { }
+  constructor(private challengeService:ChallengeService) { }
 
   ngOnInit(): void {
-    this.challenges =[
-      { 'year': 2021, 'listIndex': 1, 'descr': 'Kirjassa kirjoitetaan päiväkirjaa' },
-      { 'year': 2021, 'listIndex': 2, 'descr': 'Kirjan on kirjoittanut opettaja' },
-      { 'year': 2021, 'listIndex': 3, 'descr': 'Historiallinen romaani' }
-    ] 
-  }
+    this.challengeService.getChallenges().subscribe(challenges =>{
+      this.challenges = challenges;
+    } );
+  } 
 }
