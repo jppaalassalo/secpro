@@ -1,12 +1,6 @@
 <div>
     <p>
-        <select (change)="userSelected($event)">
-            <option value="Value-1">Value-1</option>
-            <option value="Value-2">Value-2</option>
-          </select>
         {{ challenge.descr }}
-        <app-book-record [challengeId]="challenge.listIndex" ></app-book-record>
-        <button class="del">x</button>
+        <app-book-record [challenge]="challenge" [user]="user" ></app-book-record>
      </p>
-     
 </div>

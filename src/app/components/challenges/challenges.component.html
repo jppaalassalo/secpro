@@ -1,2 +1,6 @@
-<app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" >
+<select [(ngModel)]="currentUser" (ngModelChange)="userSelected($event)" >
+    <option *ngFor="let user of users" [ngValue] = "user">{{user.userName}}</option>
+</select>
+
+<app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [user]="currentUser"  >
 </app-challenge-item>

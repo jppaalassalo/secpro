@@ -1,0 +1,6 @@
+<form class="form" (ngSubmit)="onSubmit()">
+    <input type="text" name="bookTitle" [(ngModel)]="book.bookName" >
+    <input type="text" name="bookAuthor" [(ngModel)]="book.author">
+    <input type="text" name="critics" [(ngModel)]="book.comment">
+    <input type="submit" value="Submit" class="btn">
+</form>
