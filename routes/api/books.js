@@ -81,10 +81,10 @@ router.put('/:id', (req, res) => {
 
 //delete book
 router.delete('/:id', (req, res) => {
-    Book.deleteOne({ _id: req.body._id }, function(err){
-        if (err) res.status(400).json({msg: `Book id not found ${req.params._id}`})
+    Book.deleteOne({ _id: req.params.id }, function(err){
+        if (err) res.status(400).json({msg: `Book id not found ${req.params.id}`})
         else res.json({ 
-            msg : 'Book deleted'
+            msg : `Book deleted: ${req.params.id}`
         });
     });  
 });
