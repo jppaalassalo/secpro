@@ -37,16 +37,24 @@ export class BookRecordComponent implements OnInit {
     this.showEditor = true;
   }
 
-  addBook(newBook: BookRecord){
-    if(this.createNewBook) {
-      console.log('new book: ', newBook.bookName);
-      newBook.reader=this.user;
-      newBook.challengeId=this.challenge;
-      newBook.rating=3;
+  onDelete(book:BookRecord) {
+    console.log('delete me');
+    this.bookRecords = this.bookRecords.filter(b => b._id !== book._id);
+    this.bookRecordService.deleteBookRecord(book);
+  }  
 
+  addBook(newBook: BookRecord){
+  newBook.reader=this.user;
+  newBook.challengeId=this.challenge;
+  newBook.rating=3;
+  if(this.createNewBook) {
+      console.log('new book: ', newBook.bookName);
       this.bookRecords.push(newBook);
       this.bookRecordService.addBookRecord(newBook);
-    }
+    } else {
+      console.log('updated book: ', newBook.bookName);
+      this.bookRecordService.updateBookRecord(newBook);
+    } 
     this.showEditor = false;
     this.ngOnInit();  // need to refresh component to avoid duplicate buttons
   } 

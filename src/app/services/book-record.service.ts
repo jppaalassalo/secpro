@@ -35,6 +35,23 @@ export class BookRecordService {
     return;
   } 
 
+  updateBookRecord(newBook:BookRecord):Observable<any> {
+    const url:string = `${this.bookRecordUrl}/${newBook._id} `;
+    console.log('updatebook / service', JSON.stringify(newBook, replacer));
+    this.http.put<any>(url, JSON.stringify(newBook, replacer), httpOptions)
+    .subscribe(data => {console.log('PUT reply:', data)});
+    return;
+  }
+
+  deleteBookRecord(book:BookRecord):Observable<BookRecord> {
+      const url:string = `${this.bookRecordUrl}/${book._id} `;
+      console.log('updatebook / service', JSON.stringify(book, replacer));
+      this.http.delete<BookRecord>(url, httpOptions)
+      .subscribe(data => {console.log('DELETE reply:', data)});
+      return;
+  } 
+
+
 
 }
 

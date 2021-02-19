@@ -18,5 +18,6 @@ export class AddBookComponent implements OnInit {
 
   onSubmit() {
     this.addBook.emit(this.book);
+    console.log(this.book);
   }
 }
