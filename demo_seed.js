@@ -42,7 +42,7 @@ var data = [
             'challengeId': "602f392e16cc0486b66c00e2"
           },
           { 
-            'bookName': 'Kaunasin Suon villi laulu',
+            'bookName': 'Suon villi laulu',
             'author': 'Delia Owens',
             'rating': 3,
             'comment': ' ',
