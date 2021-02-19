@@ -30,7 +30,7 @@ export class BookRecordService {
   addBookRecord(newBook:BookRecord):Observable<any> {
     const url:string = `${this.bookRecordUrl}`;
     console.log('addbook / service', JSON.stringify(newBook, replacer));
-    this.http.post<any>(url, JSON.stringify(newBook, replacer), httpOptions)
+    this.http.post<any>(url, newBook, httpOptions)
     .subscribe(data => {console.log('POST reply:', data)});
     return;
   } 
@@ -38,14 +38,14 @@ export class BookRecordService {
   updateBookRecord(newBook:BookRecord):Observable<any> {
     const url:string = `${this.bookRecordUrl}/${newBook._id} `;
     console.log('updatebook / service', JSON.stringify(newBook, replacer));
-    this.http.put<any>(url, JSON.stringify(newBook, replacer), httpOptions)
+    this.http.put<any>(url, newBook, httpOptions)
     .subscribe(data => {console.log('PUT reply:', data)});
     return;
   }
 
   deleteBookRecord(book:BookRecord):Observable<BookRecord> {
       const url:string = `${this.bookRecordUrl}/${book._id} `;
-      console.log('updatebook / service', JSON.stringify(book, replacer));
+      console.log('updatebook / service', book);
       this.http.delete<BookRecord>(url, httpOptions)
       .subscribe(data => {console.log('DELETE reply:', data)});
       return;

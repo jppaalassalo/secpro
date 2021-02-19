@@ -1,14 +1,13 @@
-<div *ngFor="let book of bookRecords ">
-    <div *ngIf="book.challengeId==challenge._id; then editExistingBook; else createNewBook"></div>
-    <ng-template #editExistingBook>
-        {{ book.bookName }} 
-        <button (click)="onEdit(book, true)" class="edit">muokkaa</button>
-        <button (click)="onDelete(book)" class="del">x</button>
-    </ng-template>
-    <ng-template #createNewBook>
-        <button (click)="onEdit(book, false)" class="edit">luo kirjaus</button>
-    </ng-template>
-</div>
+
+<div *ngIf="hasRecord==true; then editExistingBook; else createNewBook"></div>
+<ng-template #editExistingBook>
+    {{ book.bookName }} 
+    <button (click)="onEdit(book, true)" class="edit">muokkaa</button>
+    <button (click)="onDelete(book)" class="del">x</button>
+</ng-template>
+<ng-template #createNewBook>
+    <button (click)="onEdit(book, false)" class="edit">luo kirjaus</button>
+</ng-template>
 <div *ngIf="showEditor">
     <app-add-book (addBook)=addBook($event) [book]="selectedBook"></app-add-book>   
 </div>

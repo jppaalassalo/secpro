@@ -14,15 +14,26 @@ export class BookRecordComponent implements OnInit {
   @Input() user: User; 
   
   selectedBook: BookRecord; 
-  bookRecords:BookRecord[];
+  book: BookRecord; 
+  //bookRecords:BookRecord[];
   constructor(private bookRecordService:BookRecordService) { }
   showEditor:boolean = false;
   createNewBook:boolean = false;
+  hasRecord:boolean = false;
 
   ngOnInit(): void {
     this.bookRecordService.getBookRecords(this.user).subscribe(bookRecords =>{
-      this.bookRecords = bookRecords;
-      //console.log(this.bookRecords);
+      //console.log(bookRecords);
+      this.book = bookRecords.filter(b => b.challengeId==this.challenge._id)[0];
+      //this.bookRecords = bookRecords;
+      if (this.book==undefined){
+        this.hasRecord = false;
+        //console.log('no record', this.challenge._id);
+      } 
+      else{
+        this.hasRecord = true;
+        console.log('Init', this.book);
+      } 
     } );
   }
 
@@ -39,17 +50,17 @@ export class BookRecordComponent implements OnInit {
 
   onDelete(book:BookRecord) {
     console.log('delete me');
-    this.bookRecords = this.bookRecords.filter(b => b._id !== book._id);
+    //this.bookRecords = this.bookRecords.filter(b => b._id !== book._id);
     this.bookRecordService.deleteBookRecord(book);
   }  
 
   addBook(newBook: BookRecord){
-  newBook.reader=this.user;
-  newBook.challengeId=this.challenge;
+  newBook.reader=this.user._id;
+  newBook.challengeId=this.challenge._id;
   newBook.rating=3;
   if(this.createNewBook) {
       console.log('new book: ', newBook.bookName);
-      this.bookRecords.push(newBook);
+      //this.bookRecords.push(newBook);
       this.bookRecordService.addBookRecord(newBook);
     } else {
       console.log('updated book: ', newBook.bookName);
