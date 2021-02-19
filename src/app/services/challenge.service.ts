@@ -9,7 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ChallengeService {
-  challengeUrl:string = 'http://10.99.30.175:5000/api/tasks';
+  challengeUrl:string = 'http://10.99.30.175:5000/api/challenges';
 
   constructor(private http:HttpClient) { }
   getChallenges():Observable<Challenge[]> {

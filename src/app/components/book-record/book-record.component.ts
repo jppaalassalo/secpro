@@ -22,7 +22,7 @@ export class BookRecordComponent implements OnInit {
   ngOnInit(): void {
     this.bookRecordService.getBookRecords(this.user).subscribe(bookRecords =>{
       this.bookRecords = bookRecords;
-      console.log(this.bookRecords);
+      //console.log(this.bookRecords);
     } );
   }
 
@@ -41,7 +41,8 @@ export class BookRecordComponent implements OnInit {
     if(this.createNewBook) {
       console.log('new book: ', newBook.bookName);
       newBook.reader=this.user;
-      newBook.taskId=this.challenge;
+      newBook.challengeId=this.challenge;
+      newBook.rating=3;
 
       this.bookRecords.push(newBook);
       this.bookRecordService.addBookRecord(newBook);

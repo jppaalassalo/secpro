@@ -1,5 +1,5 @@
 <div *ngFor="let book of bookRecords ">
-    <div *ngIf="book.taskId==challenge.listIndex; then editExistingBook; else createNewBook"></div>
+    <div *ngIf="book.challengeId==challenge._id; then editExistingBook; else createNewBook"></div>
     <ng-template #editExistingBook>
         {{ book.bookName }} 
         <button (click)="onEdit(book, true)" class="edit">muokkaa</button>

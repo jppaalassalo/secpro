@@ -7,5 +7,5 @@ export class BookRecord {
     'rating': number;
     'comment': string;
     'reader': User;
-    'taskId': Challenge;
+    'challengeId': Challenge;
 } 
