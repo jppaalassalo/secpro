@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false}));
 
 app.use(express.static(path.join(__dirname, 'public')));
  app.get('/', (req,res) => {
-  res.send('<h1>Hello W2</h1>');
+  res.send('<h1>Lukuhaaste rest api: ./api/challenges</h1>');
 });
 
 app.use('/api/users', require('./routes/api/users'));
