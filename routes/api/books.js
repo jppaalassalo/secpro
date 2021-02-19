@@ -67,7 +67,7 @@ router.put('/:id', (req, res) => {
         bookName: req.body.bookName,
         author: req.body.author,
         rating: req.body.rating,
-        reader: req.userId,
+        reader: req.body.reader,
         challengeId: req.body.challengeId,
         comment: req.body.comment
     });
