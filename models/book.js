@@ -5,7 +5,7 @@ var BookSchema = new mongoose.Schema({
     type: String,
     index: true
   },
-  authorName:{
+  author:{
     type: String
   },
   rating:{
@@ -20,7 +20,7 @@ var BookSchema = new mongoose.Schema({
   read: { 
     type: Date, default: Date.now
   },
-  taskId:{
+  challengeId:{
     type: Number  
   } 
 });

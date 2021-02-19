@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var TaskSchema = new mongoose.Schema({
+var ChallengeSchema = new mongoose.Schema({
   year:{
     type: Number,
     index: true
@@ -15,4 +15,4 @@ var TaskSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Task', TaskSchema);
+module.exports = mongoose.model('Challenge', ChallengeSchema);
