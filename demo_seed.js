@@ -5,13 +5,13 @@ seeder.connect('mongodb://demo:demo@10.99.30.233:27017/demo', { useUnifiedTopolo
  
   // Load Mongoose models
   seeder.loadModels([
-    'models/task.js',
+    'models/challenge.js',
     'models/user.js',
     'models/book.js'
   ]);
  
   // Clear specified collections
-  seeder.clearModels(['Task', 'Book', 'User'], function() {
+  seeder.clearModels(['Challenge', 'Book', 'User'], function() {
  
     // Callback to populate DB once collections have been cleared
     seeder.populateModels(data, function() {
@@ -26,9 +26,8 @@ var data = [
     {
       'model': 'User',
       'documents': [
-          { '_id': '#9847598', 'userName': 'admin', 'passwd': 'demo'},
-          { '_id': '#7598237', 'userName': 'ZP', 'passwd': 'demo'},
-          { '_id': '#1243218', 'userName': 'Ode', 'passwd': 'demo'}
+          { '_id': '602f38052ec4c985c0d32f33', 'userName': 'ZP', 'passwd': 'demo'},
+          { '_id': '602f38052ec4c985c0d32f34', 'userName': 'Ode', 'passwd': 'demo'}
       ] 
     },
     {
@@ -39,13 +38,22 @@ var data = [
             'author': 'Jyrki Erra',
             'rating': 3,
             'comment': 'Tavoittaa mainiosti umbertoecomaisen hidassoutuisuuden.',
-            'reader': "#7598237",
-            'taskId': "3"
+            'reader': "602f38052ec4c985c0d32f33",
+            'challengeId': "3"
+          },
+          { 
+            'bookName': 'Kaunasin Suon villi laulu',
+            'author': 'Delia Owens',
+            'rating': 3,
+            'comment': ' ',
+            'reader': "602f38052ec4c985c0d32f34",
+            'challengeId': "16"
           }
+
       ] 
     },
     {  
-        'model': 'Task',
+        'model': 'Challenge',
         'documents': [
             { 'year': 2021, 'listIndex': 1, 'descr': 'Kirjassa kirjoitetaan päiväkirjaa' },
             { 'year': 2021, 'listIndex': 2, 'descr': 'Kirjan on kirjoittanut opettaja' },

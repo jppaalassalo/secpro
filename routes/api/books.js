@@ -5,12 +5,12 @@ const User = require('../../models/user');
 const uuid = require('uuid');
 const querystring = require('querystring');
 
-// gets all books
+// gets all books with username query
 router.get('/', (req, res) => {
     const username = req.query.username;
-    console.log(username);
     User.findOne({userName: username}).then ((user) => {
         if(user===null){
+            console.log(`user not found ${username}`);
             res.status(400).json({msg: `user not found ${username}`});
         } else { 
             Book.find({reader: user._id}).exec(function(err, docs) {
@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
         author: req.body.author,
         rating: req.body.rating,
         reader: req.userId,
-        taskId: req.body.taskId,
+        challengeId: req.body.challengeId,
         comment: req.body.comment
     });
     if(!newBook.bookName) {
@@ -68,7 +68,7 @@ router.put('/:id', (req, res) => {
         author: req.body.author,
         rating: req.body.rating,
         reader: req.userId,
-        taskId: req.body.taskId,
+        challengeId: req.body.challengeId,
         comment: req.body.comment
     });
     newBook.isNew=false;

@@ -20,14 +20,13 @@ app.use(logger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 
-
 app.use(express.static(path.join(__dirname, 'public')));
  app.get('/', (req,res) => {
   res.send('<h1>Hello W2</h1>');
 });
 
 app.use('/api/users', require('./routes/api/users'));
-app.use('/api/tasks', require('./routes/api/tasks'));
+app.use('/api/challenges', require('./routes/api/challenges'));
 app.use('/api/books', require('./routes/api/books'));
 
 const PORT = process.env.port || 5000
