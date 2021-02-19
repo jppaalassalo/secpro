@@ -21,7 +21,7 @@ var BookSchema = new mongoose.Schema({
     type: Date, default: Date.now
   },
   challengeId:{
-    type: Number  
+    type: String  
   } 
 });
 

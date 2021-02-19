@@ -40,13 +40,13 @@ router.get('/:id', (req, res) => {
 
 // Create book
 router.post('/', (req, res) => {
-    //console.log(req.body);
+    console.log(req.body);
     const newBook = new Book ({
         id: uuid.v4(),
         bookName: req.body.bookName,
         author: req.body.author,
         rating: req.body.rating,
-        reader: req.userId,
+        reader: req.body.reader,
         challengeId: req.body.challengeId,
         comment: req.body.comment
     });
