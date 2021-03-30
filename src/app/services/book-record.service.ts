@@ -5,6 +5,7 @@ import { Challenge } from '../models/Challenge';
 import { User } from '../models/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from "rxjs/operators";
+import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders ({
@@ -17,7 +18,7 @@ const httpOptions = {
 })
 export class BookRecordService {
 
-  bookRecordUrl:string = 'http://10.99.30.175:5000/api/books';
+  bookRecordUrl:string = environment.baseUrl+'api/books';
 
   constructor(private http:HttpClient) { }
 

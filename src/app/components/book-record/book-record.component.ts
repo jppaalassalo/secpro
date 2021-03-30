@@ -46,12 +46,14 @@ export class BookRecordComponent implements OnInit {
       this.createNewBook = true;
     } 
     this.showEditor = true;
+    this.ngOnInit();
   }
 
   onDelete(book:BookRecord) {
     console.log('delete me');
     //this.bookRecords = this.bookRecords.filter(b => b._id !== book._id);
     this.bookRecordService.deleteBookRecord(book);
+    this.ngOnInit();
   }  
 
   addBook(newBook: BookRecord){

@@ -1,6 +1,5 @@
-<div>
-    <p>
-        {{ challenge.descr }}
-        <app-book-record [challenge]="challenge" [user]="user" ></app-book-record>
-     </p>
+<div class=challenge-item>
+    <span style="padding-left:1em">{{challenge.listIndex}}</span> 
+    <span style="padding-left:2em">{{ challenge.descr }}</span>    
+    <app-book-record [challenge]="challenge" [user]="user" ></app-book-record>
 </div>

@@ -4,12 +4,13 @@ import { BookRecord } from '../models/BookRecord';
 import { Challenge } from '../models/Challenge';
 import { User } from '../models/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChallengeService {
-  challengeUrl:string = 'http://10.99.30.175:5000/api/challenges';
+  challengeUrl:string = environment.baseUrl+'api/challenges';
 
   constructor(private http:HttpClient) { }
   getChallenges():Observable<Challenge[]> {

@@ -1,6 +1,10 @@
-<select [(ngModel)]="currentUser" (ngModelChange)="userSelected($event)" >
-    <option *ngFor="let user of users" [ngValue] = "user">{{user.userName}}</option>
-</select>
-
+<p class='select-user'>
+    Valitse käyttäjä: <br>
+    <select [(ngModel)]="currentUser" (ngModelChange)="userSelected($event)" >
+        <option *ngFor="let user of users" [ngValue] = "user">{{user.userName}}</option>
+    </select>
+</p>
+<p>
 <app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [user]="currentUser"  >
 </app-challenge-item>
+</p>
