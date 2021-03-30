@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://lukuhaaste.prgramed.fi:5000/'
+  baseUrl: 'https://lukuhaaste.prgramed.fi:8443/'
 };
 
 /*
