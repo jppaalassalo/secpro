@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ChallengeService } from 'src/app/services/challenge.service';
-import { UserService } from 'src/app/services/user.service';
+import { ChallengeService } from '../../services/challenge.service';
+import { UserService } from '../../services/user.service';
 import { Challenge } from '../../models/Challenge'; 
 import { User } from '../../models/User'; 
 

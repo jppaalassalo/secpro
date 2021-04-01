@@ -4,7 +4,7 @@ import { BookRecord } from '../models/BookRecord';
 import { Challenge } from '../models/Challenge';
 import { User } from '../models/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

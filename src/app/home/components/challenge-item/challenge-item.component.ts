@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Challenge } from 'src/app/models/Challenge';
+import { Challenge } from '../../models/Challenge';
 import { User } from '../../models/User';
 
 @Component({
