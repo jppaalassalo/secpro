@@ -1,6 +1,6 @@
 <p class='select-user'>
     Valitse käyttäjä: <br>
-    <select [(ngModel)]="viewUser" (ngModelChange)="userSelected($event)" >
+    <select [(ngModel)]="viewReader" (ngModelChange)="readerSelected($event)" >
         <option *ngFor="let user of users" [ngValue] = "user">{{user.userName}}</option>
     </select>
 </p>
@@ -9,7 +9,7 @@
 </p>
 <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
     <p>
-        <app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [user]="viewUser"  >
+        <app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [user]="viewReader"  >
         </app-challenge-item>
     </p>    
 </ng-container>

@@ -14,28 +14,30 @@ import { User } from '../../models/User';
 export class ChallengesComponent implements OnInit {
   challenges:Challenge[];
   users:User[];
-  viewUser:User;
+  viewReader:User;
 
   constructor(private challengeService:ChallengeService, private userService:UserService, public auth: AuthService) { }
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe(users =>{
       this.users = users;
-      if(this.viewUser==undefined){
-        this.viewUser=this.users.find(e => e.userName=='ZP');
+      if(this.viewReader==undefined){
+        this.viewReader=this.users.find(e => e.userName=='ZP');
       }
-      console.log(this.viewUser.userName);
+      console.log(this.viewReader.userName);
       this.challengeService.getChallenges().subscribe(challenges =>{
         this.challenges = challenges;
       } );
     } );
   }
 
-  userSelected(user)
+  readerSelected(reader:User)
   {
-    console.log(user.userName);
-    this.viewUser=user;
-    this.ngOnInit();
-  } 
+    console.log(reader.userName);
+    this.viewReader=reader;
+    this.challengeService.getChallenges().subscribe(challenges =>{
+      this.challenges = challenges;
+    } );
+} 
  
 }
