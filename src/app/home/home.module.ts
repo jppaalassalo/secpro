@@ -7,6 +7,7 @@ import { ChallengesComponent } from './components/challenges/challenges.componen
 import { ChallengeItemComponent } from './components/challenge-item/challenge-item.component';
 import { BookRecordComponent } from './components/book-record/book-record.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { AddBookComponent } from './components/add-book/add-book.component';
     ChallengesComponent,
     ChallengeItemComponent,
     BookRecordComponent,
-    AddBookComponent
+    AddBookComponent,
+    LoginComponent
   ],
   exports: [
     ChallengesComponent
