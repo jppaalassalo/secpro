@@ -14,17 +14,17 @@ import { User } from '../../models/User';
 export class ChallengesComponent implements OnInit {
   challenges:Challenge[];
   users:User[];
-  currentUser:User;
+  viewUser:User;
 
   constructor(private challengeService:ChallengeService, private userService:UserService, public auth: AuthService) { }
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe(users =>{
       this.users = users;
-      if(this.currentUser==undefined){
-        this.currentUser=this.users.find(e => e.userName=='ZP');
+      if(this.viewUser==undefined){
+        this.viewUser=this.users.find(e => e.userName=='ZP');
       }
-      console.log(this.currentUser.userName);
+      console.log(this.viewUser.userName);
       this.challengeService.getChallenges().subscribe(challenges =>{
         this.challenges = challenges;
       } );
@@ -34,7 +34,7 @@ export class ChallengesComponent implements OnInit {
   userSelected(user)
   {
     console.log(user.userName);
-    this.currentUser=user;
+    this.viewUser=user;
     this.ngOnInit();
   } 
  
