@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 import { ChallengeService } from '../../services/challenge.service';
 import { UserService } from '../../services/user.service';
 import { Challenge } from '../../models/Challenge'; 
@@ -15,7 +16,7 @@ export class ChallengesComponent implements OnInit {
   users:User[];
   currentUser:User;
 
-  constructor(private challengeService:ChallengeService, private userService:UserService) { }
+  constructor(private challengeService:ChallengeService, private userService:UserService, public auth: AuthService) { }
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe(users =>{

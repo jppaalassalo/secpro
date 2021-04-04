@@ -7,7 +7,13 @@
 <p>
     <app-login></app-login>
 </p>
-<p>
-<app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [user]="currentUser"  >
-</app-challenge-item>
-</p>
+<ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+    <p>
+        <app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [user]="currentUser"  >
+        </app-challenge-item>
+    </p>    
+</ng-container>
+
+<ng-template #loggedOut>
+    <p>Kirjaudu sivulle nähdäksesi oman haastelistasi!</p>
+</ng-template>
