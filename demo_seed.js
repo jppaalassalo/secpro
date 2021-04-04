@@ -26,8 +26,8 @@ var data = [
     {
       'model': 'User',
       'documents': [
-          { '_id': '602f38052ec4c985c0d32f33', 'userName': 'ZP', 'passwd': 'demo'},
-          { '_id': '602f38052ec4c985c0d32f34', 'userName': 'Ode', 'passwd': 'demo'}
+          { '_id': '602f38052ec4c985c0d32f33', 'userName': 'ZP', 'email': 'jp.paalassalo@gmail.com'},
+          { '_id': '602f38052ec4c985c0d32f34', 'userName': 'Ode', 'email': 'outi.veivo@gmail.com'}
       ] 
     },
     {
