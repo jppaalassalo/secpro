@@ -1,3 +1,20 @@
+# Lukuhaaste
+
+Author: JP Paalassalo
+Course:
+
+## Introduction
+
+The goal of this project is to demonstrate secure programming concepts in MEAN stack application. The application is a checklist tool for 50 preset reading challenges, and the user can record reading achievements for each challenge. The achievements are shared to other app users.
+
+In the context of this course, the following work was done:
+- top-level threat analysis for the app
+- identifying and prioritzing threats
+    - introducing user capabilities for frontend
+    - implementing auth0 login and jwt sessions (frontend)
+    - jwt 
+
+
 ```plantuml
 Bob -> Alice : hello
 Alice -> Bob : hi
