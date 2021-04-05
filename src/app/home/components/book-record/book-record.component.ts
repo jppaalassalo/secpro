@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BookRecordService } from '../../services/book-record.service';
+import { UserService } from '../../services/user.service';
 import { BookRecord } from '../../models/BookRecord';
 import { Challenge } from '../../models/Challenge'
 import { User } from '../../models/User'
@@ -16,19 +17,21 @@ export class BookRecordComponent implements OnInit {
   selectedBook: BookRecord; 
   book: BookRecord; 
   //bookRecords:BookRecord[];
-  constructor(private bookRecordService:BookRecordService) { }
+  constructor(private bookRecordService:BookRecordService, private userService:UserService) { }
   showEditor:boolean = false;
   createNewBook:boolean = false;
   hasRecord:boolean = false;
+  readOnly:boolean = true;
 
   ngOnInit(): void {
+    this.readOnly = this.userService.getCurrentUserNick() != this.reader.userName;
+    console.log('Can edit: ', !this.readOnly);
     this.bookRecordService.getBookRecords(this.reader).subscribe(bookRecords =>{
       //console.log(bookRecords);
       this.book = bookRecords.filter(b => b.challengeId==this.challenge._id)[0];
       //this.bookRecords = bookRecords;
       if (this.book==undefined){
         this.hasRecord = false;
-        //console.log('no record', this.challenge._id);
       } 
       else{
         this.hasRecord = true;

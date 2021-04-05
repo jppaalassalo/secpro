@@ -4,13 +4,13 @@
     <br><br>
     <span style="padding-left:6em">{{ book.author }} : {{ book.bookName }} </span> <br>
     <span style="padding-left:6em">&ldquo;{{ book.comment }}&rdquo;</span> 
-    <span style="padding-left:2em">
+    <span *ngIf="!readOnly" style="padding-left:2em">
         <button (click)="onEdit(book, true)" class="edit">muokkaa</button>
         <button (click)="onDelete(book)" class="del">x</button>
     </span>
 </ng-template>
 <ng-template #createNewBook>
-    <span style="padding-left:2em">
+    <span *ngIf="!readOnly" style="padding-left:2em">
         <button (click)="onEdit(book, false)" class="edit">luo kirjaus</button>
     </span>
 </ng-template>
