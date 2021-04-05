@@ -9,16 +9,40 @@ The goal of this project is to demonstrate secure programming concepts in MEAN s
 
 In the context of this course, the following work was done:
 - top-level threat analysis for the app
-- identifying and prioritzing threats
+- identifying and prioritizing threats
+    - implementing https for both frontend and backend
     - introducing user capabilities for frontend
     - implementing auth0 login and jwt sessions (frontend)
-    - jwt 
+    - jwt tokens for backend
 
+## Application architecture and deployment
+
+The application frontend is a single-page app implemented using Angular 11. The backend is node-express based. Backend utilizes Mongo database.
 
 ```plantuml
-Bob -> Alice : hello
-Alice -> Bob : hi
+nwdiag {
+  internet [shape = cloud, description = " internet \n Telia 6rd-default-gw ::88.193.255.254"];
+  internet -- toprack; 
+  toprack [shape=node, \
+           address = "dhcpv4: 88.192.39.90/15 \n6rd params via option 212", \
+           description = "top-rack.prgramed.fi (ER-10X) \n\
+           delegated prefix 2001:2003:f8xx:xx00::/56\n\
+           (88.193.x.x => 2001:2003:f9xx::/56) \n\
+           ULA fd59:225a:04e1:26::/56"];
+
+  network dmz {
+      address = "10.99.50.0/24 \n 2001:2003:f8xx:xx50::/64 \n fd59:225a:04e1:2650::/64";
+      toprack;
+      www [shape=node, address = "10.99.50.10 \n fd59:225a:04e1:2650:0211:32ff:fe44:11d6/64", \
+           description = "www.prgramed.fi (DS214)\n  PhotoStation :8765\n  OtherStation :6553"];
+  }
 ```
+
+
+## Threat analysis
+
+
+
 
 
 # ReadingChallenge
