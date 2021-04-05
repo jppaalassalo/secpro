@@ -9,7 +9,7 @@ import { User } from '../../models/User';
 })
 export class ChallengeItemComponent implements OnInit {
  @Input() challenge: Challenge; 
- @Input() user: User; 
+ @Input() reader: User; 
   constructor() { }
 
   ngOnInit(): void {

@@ -9,7 +9,7 @@
 </p>
 <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
     <p>
-        <app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [user]="viewReader"  >
+        <app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [reader]="viewReader"  >
         </app-challenge-item>
     </p>    
 </ng-container>

@@ -11,7 +11,7 @@ import { User } from '../../models/User'
 })
 export class BookRecordComponent implements OnInit {
   @Input() challenge: Challenge; 
-  @Input() user: User; 
+  @Input() reader: User; 
   
   selectedBook: BookRecord; 
   book: BookRecord; 
@@ -22,7 +22,7 @@ export class BookRecordComponent implements OnInit {
   hasRecord:boolean = false;
 
   ngOnInit(): void {
-    this.bookRecordService.getBookRecords(this.user).subscribe(bookRecords =>{
+    this.bookRecordService.getBookRecords(this.reader).subscribe(bookRecords =>{
       //console.log(bookRecords);
       this.book = bookRecords.filter(b => b.challengeId==this.challenge._id)[0];
       //this.bookRecords = bookRecords;
@@ -57,7 +57,7 @@ export class BookRecordComponent implements OnInit {
   }  
 
   addBook(newBook: BookRecord){
-  newBook.reader=this.user._id;
+  newBook.reader=this.reader._id;
   newBook.challengeId=this.challenge._id;
   newBook.rating=3;
   if(this.createNewBook) {
