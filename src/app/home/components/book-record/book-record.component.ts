@@ -24,7 +24,12 @@ export class BookRecordComponent implements OnInit {
   readOnly:boolean = true;
 
   ngOnInit(): void {
-    this.readOnly = this.userService.getCurrentUserNick() != this.reader.userName;
+    this.userService.getCurrentUserNick().subscribe({
+      next: res => {
+        console.log(res);
+        this.readOnly = (res !== this.reader.userName);
+      } 
+     });
     console.log('Can edit: ', !this.readOnly);
     this.bookRecordService.getBookRecords(this.reader).subscribe(bookRecords =>{
       //console.log(bookRecords);

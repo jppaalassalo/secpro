@@ -4,6 +4,7 @@ import { User } from '../models/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '@auth0/auth0-angular';
+import { map, switchMap, tap, take } from 'rxjs/operators';
 
 // User service provides user profile data based on
 // app database values and auth0 authentication data.
@@ -28,8 +29,17 @@ export class UserService {
   } 
 
   //get nick for authenticated user (or null)
-  getCurrentUserNick():String {
-    this.auth.user$.subscribe(res => console.log(res));
-    return('ZP');
-  } 
+  //need to join two observables to get result:
+  //    1. array of users from database
+  //    2. authenticated user from auth0 service
+  getCurrentUserNick():Observable<String> {
+    //this.auth.user$.subscribe(res => console.log(res));
+    return this.getUsers().pipe(
+      switchMap(users => this.auth.user$.pipe(
+        map(authUser => users.find(user => user.email === authUser.email)),
+        map(authUser => authUser.userName),
+        take(1)
+      ))
+    ) //.subscribe({next: res => {console.log(res);  }} )
+  }
 }
