@@ -22,11 +22,13 @@ export class BookRecordComponent implements OnInit {
   createNewBook:boolean = false;
   hasRecord:boolean = false;
   readOnly:boolean = true;
+  currentUserNick:String;
 
   ngOnInit(): void {
     this.userService.getCurrentUserNick().subscribe({
       next: res => {
-        console.log(res);
+        //console.log(res);
+        this.currentUserNick = res;
         this.readOnly = (res !== this.reader.userName);
       } 
      });
