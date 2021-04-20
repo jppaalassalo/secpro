@@ -1,3 +1,50 @@
+# Lukuhaaste
+
+Author: JP Paalassalo
+Course:
+
+## Introduction
+
+The goal of this project is to demonstrate secure programming concepts in MEAN stack application. The application is a checklist tool for 50 preset reading challenges, and the user can record reading achievements for each challenge. The achievements are shared to other app users.
+
+In the context of this course, the following work was done:
+- top-level threat analysis for the app
+- identifying and prioritizing threats
+    - implementing https for both frontend and backend
+    - introducing user capabilities for frontend
+    - implementing auth0 login and jwt sessions (frontend)
+    - jwt tokens for backend
+
+## Application architecture and deployment
+
+The application frontend is a single-page app implemented using Angular 11. The backend is node-express based. Backend utilizes Mongo database. Application server and database are 
+
+```plantuml
+nwdiag {
+  internet [shape = cloud, description = "internet"];
+  internet -- firewall; 
+  firewall [shape=node, \
+           address = "dhcpv4: 88.192.39.90/15 \n6rd params via option 212", \
+           description = "top-rack.prgramed.fi (ER-10X) \n\
+           delegated prefix 2001:2003:f8xx:xx00::/56\n\
+           (88.193.x.x => 2001:2003:f9xx::/56) \n\
+           ULA fd59:225a:04e1:26::/56"];
+
+  network dmz {
+      address = "10.99.50.0/24";
+      firewall;
+      MongoDB [shape=node, address = "10.99.50.10"];
+      LukuhaasteServer [shape=node, address = "10.99.50.11"];
+  }
+```
+
+
+## Threat analysis
+
+
+
+
+
 # ReadingChallenge
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.0.
