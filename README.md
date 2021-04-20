@@ -29,12 +29,12 @@ nwdiag {
     MongoDB [shape=database];
     LukuhaasteBackend [shape=node];
     LukuhaasteFrontend [shape=node];
-    zendocker;
+    xendocker;
   }
   internet [shape = cloud, description = "internet"];
   internet -- firewall; 
   firewall [shape=node ];
-  network dmz {
+  network DMZ {
       address = "10.x.x.x/24";
       firewall;
       MongoDB;
@@ -45,7 +45,7 @@ nwdiag {
   network development {
     address = "10.y.y.y/24";
     firewall;
-    zendocker [shape=node, description = "zen + docker\nplatform"];
+    xendocker [shape=node, description = "zen + docker\nplatform"];
     workstation [ shape=node ];
   }
 @enduml
@@ -56,9 +56,21 @@ The database exposure vulnerability can be mitigated by limiting database access
 
 ## Threat analysis
 
+Threat analysis was implemented using a threat modelling process where all system components and interfaces were studied, attack vectors were identified and each vulnerability was scored as risk (0-5) based on damage x probability. 
 
-
-
+| Scope | Vulnerability | Risk | Mitigation |
+| ------ | ------ | ------ | ------ |
+| firewall | configuration error | 2 | Utilize external testing services |
+| firewall | unauthorized access | 2 | Keep FW updated. Strong admin password. Restrict access from internal network too. |
+| frontend | nginx vulnerabilities | 4 | Set up watchtower to rebuild frontend as nginx upgrades are available. |
+| docker platform | docker API vulnerabilities exposed to containers | 1 | Keep upgrading platform. All public containers must run with limited non-root privileges. |
+| xen platform | virtualisation network stack has vulnerability  | 1 | Keep xen up-to-date. |
+| backend/frontend node platform | node library vulnerabilities | 2 | Check and fix vulnerabilities using snyk. |
+| development | Development workstation gets infected and provides admin access to system | 5 | Isolate development environment to a separate workstation or on Qubes OS. |
+| frontend code | Frontend provides unauthorised access to backend | 1 | (Frontend code is public and fully modifiable by attackers; not much can be done) Implement user authentication and authorization. Sanitize data sent to backend. |
+| backend code | unauthorised access | 3 | Implement user authentication and jwt sessions |
+| backend code | injection attacks | 3 | Sanitize all incoming data |
+| backend code | CORS | 3 | Implement. Set SameSite cookie attribute to Strict. |
 
 # ReadingChallenge
 
