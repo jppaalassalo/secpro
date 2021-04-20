@@ -1,6 +1,6 @@
 # Lukuhaaste
 
-Author: JP Paalassalo
+Author: JP Paalassalo \
 Course:
 
 ## Introduction
@@ -8,36 +8,51 @@ Course:
 The goal of this project is to demonstrate secure programming concepts in MEAN stack application. The application is a checklist tool for 50 preset reading challenges, and the user can record reading achievements for each challenge. The achievements are shared to other app users.
 
 In the context of this course, the following work was done:
-- top-level threat analysis for the app
+
+- top-level threat analysis for the app including networking and programs
 - identifying and prioritizing threats
     - implementing https for both frontend and backend
     - introducing user capabilities for frontend
     - implementing auth0 login and jwt sessions (frontend)
     - jwt tokens for backend
+- existing demo was deployed to public service
 
 ## Application architecture and deployment
 
-The application frontend is a single-page app implemented using Angular 11. The backend is node-express based. Backend utilizes Mongo database. Application server and database are 
+The application consists of Angular single-page app frontend served by nginx, nodejs+express backend and Mongo database. These three are deployed in shared network, and firewall configuration allows external access to necessary frontend and backend ports. 
 
 ```plantuml
+@startuml
 nwdiag {
+  group docker {
+    color = "#FFaaaa";
+    MongoDB [shape=database];
+    LukuhaasteBackend [shape=node];
+    LukuhaasteFrontend [shape=node];
+    zendocker;
+  }
   internet [shape = cloud, description = "internet"];
   internet -- firewall; 
-  firewall [shape=node, \
-           address = "dhcpv4: 88.192.39.90/15 \n6rd params via option 212", \
-           description = "top-rack.prgramed.fi (ER-10X) \n\
-           delegated prefix 2001:2003:f8xx:xx00::/56\n\
-           (88.193.x.x => 2001:2003:f9xx::/56) \n\
-           ULA fd59:225a:04e1:26::/56"];
-
+  firewall [shape=node ];
   network dmz {
-      address = "10.99.50.0/24";
+      address = "10.x.x.x/24";
       firewall;
-      MongoDB [shape=node, address = "10.99.50.10"];
-      LukuhaasteServer [shape=node, address = "10.99.50.11"];
+      MongoDB;
+      LukuhaasteFrontend;
+      LukuhaasteBackend;
   }
+  
+  network development {
+    address = "10.y.y.y/24";
+    firewall;
+    zendocker [shape=node, description = "zen + docker\nplatform"];
+    workstation [ shape=node ];
+  }
+@enduml
 ```
+The selected architecture exposes database (and its admin access endpoint) unnecessarily to DMZ network. An alternative decision would be to place database to an internal network visible only to backend. The rationale for the selected architecture is that docker does not readily support connecting containers to multiple networks; it would be necessary to start the containers first and then attach the running backend container to other network. It would make system setup and maintenance more complex.
 
+The database exposure vulnerability can be mitigated by limiting database access to backend and admin IP's only.
 
 ## Threat analysis
 
