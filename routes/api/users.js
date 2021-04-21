@@ -1,11 +1,13 @@
 const express = require('express');
+const { checkJwt } = require("../../middleware/check-jwt");
 const router = express.Router();
 const User = require('../../models/user');
 const uuid = require('uuid');
 const querystring = require('querystring');
 
+
 // gets all users
-router.get('/', (req, res) => {
+router.get('/', checkJwt, (req, res) => {
     User.find({}).exec(function(err, docs) {
         if (!err) { 
             res.send(docs);
