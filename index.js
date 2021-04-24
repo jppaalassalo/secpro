@@ -1,3 +1,4 @@
+require('custom-env').env()
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
@@ -13,17 +14,17 @@ const path = require('path');
 const logger = require('./middleware/logger');
 const app = express();
 const router = express.Router();
-const { clientOrigins, serverPort } = require("./config/env.dev");
-const { domain, audience } = require("./config/env.dev");
+const { clientOriginUrl, serverPort } = require("./config/env");
+const { domain, audience, dbUrl } = require("./config/env");
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://demo:demo@10.99.30.233:27017/demo', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // handlebars middleware
 app.engine('handlebars', exph({defaulLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.use(cors({ origin: clientOrigins }));
+app.use(cors({ origin: clientOriginUrl }));
 //app.use(cors());
 app.use(logger);
 // Body parser middlelware
@@ -44,15 +45,14 @@ app.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') {
     res.status(401);
     res.json({"message" : err.name + ": " + err.message});
-    //res.render('message :' + err.name + err.message);
   } else
     next(err);
 });
 
-//app.use(function errorHandler (err, req, res, next) {
-//  res.status(500)
-//  res.render('error', { error: err })
-//});
+app.use(function errorHandler (err, req, res, next) {
+  res.status(500);
+  res.json('error', { error: err })
+});
 
 
 var httpServer = http.createServer(app);

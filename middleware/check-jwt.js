@@ -3,7 +3,7 @@
 
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
-const { domain, audience } = require("../config/env.dev");
+const { domain, audience } = require("../config/env");
 
 //for debugging: is there a auth header?
 const logJWT = (req, res, next) => {
