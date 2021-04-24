@@ -31,7 +31,7 @@ if (!clientOriginUrl) {
   );
 }
 
-const clientOrigins = ["http://localhost:4200"];
+const clientOrigins = ["https://localhost:4200"];
 
 module.exports = {
   audience,

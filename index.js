@@ -23,8 +23,8 @@ mongoose.connect('mongodb://demo:demo@10.99.30.233:27017/demo', {useNewUrlParser
 app.engine('handlebars', exph({defaulLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-//app.use(cors({ origin: clientOrigins }));
-app.use(cors());
+app.use(cors({ origin: clientOrigins }));
+//app.use(cors());
 app.use(logger);
 // Body parser middlelware
 app.use(express.json());
