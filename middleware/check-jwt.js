@@ -6,17 +6,18 @@ const jwksRsa = require("jwks-rsa");
 const { domain, audience } = require("../config/env.dev");
 
 //for debugging: is there a auth header?
-const authenticateJWT = (req, res, next) => {
+const logJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (authHeader) {
         const token = authHeader.split(' ')[1];
-        console.log('Hep');
+        console.log('jwt token:');
         console.log(token);
     } else {
         res.sendStatus(401);
         console.log('No auth!!');
     }
+    next()
 };
 
 const checkJwt = jwt({
@@ -34,4 +35,5 @@ const checkJwt = jwt({
 
 module.exports = {
   checkJwt,
+  logJWT,
 };
