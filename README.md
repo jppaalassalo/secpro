@@ -80,10 +80,12 @@ In order to achieve all required functionality and security authentication and a
 
 ```plantuml
 @startuml
-participant User
-participant "Angular App\n in Browser" as Browser
-participant "Auth0 Tenant" as auth
-participant "backend API" as backend
+actor User
+skinparam minClassWidth 120
+participant "Lukuhaaste\n Angular App\n in Browser" as Browser
+participant "Lukuhaaste\n backend API\n " as backend
+participant "\nAuth0 Tenant\n" as auth
+participant "Google \nauthentication API\n" as google
 == Initialization ==
 rnote over auth
  Tenant is configured:
@@ -101,8 +103,9 @@ rnote over Browser
  Code Challenge
 endrnote
 Browser --> auth: Authentication Code Request\n and Code challenge 
-auth --> User: Redirect to Auth0\n universal login
-User --> auth: Authenticate using\n Google credentials
+auth --> Browser: Auth0 universal login\n HTML page
+User --> Browser: Enter google credentials
+Browser --> google: request access token
 rnote over auth
  Generate one-time 
  Authorization code 
@@ -122,14 +125,15 @@ endrnote
 auth --> Browser: ID Token Access Token
 
 == Access backend ==
-Browser --> backend: GET/PUT/POST data with Access token
+Browser --> backend: GET/PUT/POST\n data with Access token
 rnote over backend
  Validate tokens
  Verify token claims
 endrnote
+backend --> auth: verify token
+auth --> backend: OK
 backend --> Browser: Response
 @enduml
-
 ```
 
 # ReadingChallenge
