@@ -10,7 +10,7 @@ const express = require('express');
 const helmet = require('helmet');
 var delay = require('express-delay'); //for frontend testing!
 var cors = require('cors');
-const exph = require('express-handlebars');
+//const exph = require('express-handlebars');
 const path = require('path');
 const logger = require('./middleware/logger');
 const app = express();
@@ -30,13 +30,24 @@ app.use(logger);
 //app.use(helmet());
 app.use(helmet({
   contentSecurityPolicy :{
-  directives:{
-    defaultSrc:["'self'"]}
+    directives:{
+      defaultSrc:["'self'"]}
   }
  } ));
 
 app.use(cors({ origin: clientOriginUrl }));
 app.disable("x-powered-by");
+
+let setCache = function (req, res, next) {
+  if (req.method == 'GET') {
+    res.set('Cache-control', `must-revalidate, no-cache, no-store`)
+  } else {
+    res.set('Cache-control', `must-revalidate, no-cache, no-store`)
+  }
+  next()
+}
+
+app.use(setCache)
 // Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
