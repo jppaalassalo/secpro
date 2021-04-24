@@ -23,7 +23,8 @@ mongoose.connect('mongodb://demo:demo@10.99.30.233:27017/demo', {useNewUrlParser
 app.engine('handlebars', exph({defaulLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.use(cors({ origin: clientOrigins }));
+//app.use(cors({ origin: clientOrigins }));
+app.use(cors());
 app.use(logger);
 // Body parser middlelware
 app.use(express.json());
@@ -38,6 +39,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/challenges', require('./routes/api/challenges'));
 app.use('/api/books', require('./routes/api/books'));
+
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message" : err.name + ": " + err.message});
+    //res.render('message :' + err.name + err.message);
+  } else
+    next(err);
+});
+
+//app.use(function errorHandler (err, req, res, next) {
+//  res.status(500)
+//  res.render('error', { error: err })
+//});
+
 
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
