@@ -25,17 +25,10 @@ app.engine('handlebars', exph({defaulLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.use(cors({ origin: clientOriginUrl }));
-//app.use(cors());
 app.use(logger);
-// Body parser middlelware
+// Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
-//app.use(delay(2000));
-
-app.use(express.static(path.join(__dirname, 'public')));
- app.get('/', (req,res) => {
-  res.send('<h1>Lukuhaaste rest api: ./api/challenges</h1>');
-});
 
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/challenges', require('./routes/api/challenges'));
@@ -51,7 +44,7 @@ app.use(function (err, req, res, next) {
 
 app.use(function errorHandler (err, req, res, next) {
   res.status(500);
-  res.json('error', { error: err })
+  res.json({"message" : err.name + ": " + err.message});
 });
 
 
