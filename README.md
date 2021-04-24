@@ -68,9 +68,69 @@ Threat analysis was implemented using a threat modelling process where all syste
 | backend/frontend node platform | node library vulnerabilities | 2 | Check and fix vulnerabilities using snyk. |
 | development | Development workstation gets infected and provides admin access to system | 5 | Isolate development environment to a separate workstation or on Qubes OS. |
 | frontend code | Frontend provides unauthorised access to backend | 1 | (Frontend code is public and fully modifiable by attackers; not much can be done) Implement user authentication and authorization. Sanitize data sent to backend. |
+| frontend code | Frontend identity is compromised enabling MITM attack and possibly stealing user credentials | 2 | Use proper certificates and force using HTTPS, use external authentication. |
+| frontend code | Lost user credentials allow stealing the account | 2 | Enable multi-factor authentication and anomaly detection |
 | backend code | unauthorised access | 3 | Implement user authentication and jwt sessions |
 | backend code | injection attacks | 3 | Sanitize all incoming data |
 | backend code | CORS | 3 | Implement. Set SameSite cookie attribute to Strict. |
+
+## Authentication and authorization
+
+In order to achieve all required functionality and security authentication and authorization is inplemented using external service. Auth0 was selected. In Lukuhaaste use case, the recommended setup is "Authorization Code Flow with PKCE" where PKCE stands for "proof Key for Code Exchange". [https://auth0.com/docs/flows/authorization-code-flow-with-proof-key-for-code-exchange-pkce] [https://auth0.com/docs/libraries/auth0-angular-spa]
+
+```plantuml
+@startuml
+participant User
+participant "Angular App\n in Browser" as Browser
+participant "Auth0 Tenant" as auth
+participant "backend API" as backend
+== Initialization ==
+rnote over auth
+ Tenant is configured:
+ Client ID
+ Allowed redirect URIs
+endrnote
+
+
+== Authentication ==
+
+User -> Browser: Click "login"
+rnote over Browser
+ Generate Code 
+ Verifier and 
+ Code Challenge
+endrnote
+Browser --> auth: Authentication Code Request\n and Code challenge 
+auth --> User: Redirect to Auth0\n universal login
+User --> auth: Authenticate using\n Google credentials
+rnote over auth
+ Generate one-time 
+ Authorization code 
+ and redirect to app
+endrnote
+auth --> Browser: Authorization Code
+note over Browser
+ Redirect with Authorization Code can be captured
+ by malicious code. It is of no use without
+ Code Verifier that proves only original requester
+ gets Access Tokens.
+endnote
+Browser --> auth: Authorization Code\n and Code Verifier
+rnote over auth
+ Verify
+endrnote
+auth --> Browser: ID Token Access Token
+
+== Access backend ==
+Browser --> backend: GET/PUT/POST data with Access token
+rnote over backend
+ Validate tokens
+ Verify token claims
+endrnote
+backend --> Browser: Response
+@enduml
+
+```
 
 # ReadingChallenge
 
