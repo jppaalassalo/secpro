@@ -19,7 +19,7 @@ import { map, switchMap, tap, take } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
-  userUrl:string = environment.baseUrl+'api/users';
+  userUrl:string = environment.apiUrl+'/api/users';
 
   constructor(private http:HttpClient, public auth: AuthService) { }
 

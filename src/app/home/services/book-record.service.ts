@@ -18,7 +18,7 @@ const httpOptions = {
 })
 export class BookRecordService {
 
-  bookRecordUrl:string = environment.baseUrl+'api/books';
+  bookRecordUrl:string = environment.apiUrl+'/api/books';
 
   constructor(private http:HttpClient) { }
 

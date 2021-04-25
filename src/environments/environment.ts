@@ -2,9 +2,33 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+
+// ref https://github.com/auth0-samples/auth0-angular-samples/blob/master/Sample-01/src/environments/environment.ts
+import config from '../../auth_config.json';
+
+const { domain, clientId, audience, apiUri, appUri, errorPath } = config as {
+  domain: string;
+  clientId: string;
+  audience?: string;
+  apiUri: string;
+  appUri: string;
+  errorPath: string;
+};
+
 export const environment = {
   production: false,
-  baseUrl: 'https://lukuhaaste.prgramed.fi:8443/'
+  baseUrl: appUri,
+  apiUrl: apiUri,
+  auth: {
+    domain,
+    clientId,
+    ...(audience && audience !== 'YOUR_API_IDENTIFIER' ? { audience } : null),
+    redirectUri: window.location.origin,
+    errorPath,
+  },
+  httpInterceptor: {
+    allowedList: [`${apiUri}/*`],
+  },
 };
 
 /*
@@ -14,4 +38,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+import 'zone.js/dist/zone-error';  // Included with Angular CLI.

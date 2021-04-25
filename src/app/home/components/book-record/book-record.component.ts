@@ -32,7 +32,7 @@ export class BookRecordComponent implements OnInit {
         this.readOnly = (res !== this.reader.userName);
       } 
      });
-    console.log('Can edit: ', !this.readOnly);
+    //console.log('Can edit: ', !this.readOnly);
     this.bookRecordService.getBookRecords(this.reader).subscribe(bookRecords =>{
       //console.log(bookRecords);
       this.book = bookRecords.filter(b => b.challengeId==this.challenge._id)[0];
@@ -42,7 +42,7 @@ export class BookRecordComponent implements OnInit {
       } 
       else{
         this.hasRecord = true;
-        console.log('Init', this.book);
+        //console.log('Init', this.book);
       } 
     } );
   }

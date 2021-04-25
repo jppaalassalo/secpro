@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class ChallengeService {
-  challengeUrl:string = environment.baseUrl+'api/challenges';
+  challengeUrl:string = environment.apiUrl+'/api/challenges';
 
   constructor(private http:HttpClient) { }
   getChallenges():Observable<Challenge[]> {

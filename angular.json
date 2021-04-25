@@ -62,8 +62,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "reading-challenge:build",
-            "sslKey": "../fullstack/keys/server.key",
-            "sslCert": "../fullstack/keys/server.crt"
+            "sslKey": "../../fullstack/keys/server.key",
+            "sslCert": "../../fullstack/keys/server.crt"
           },
           "configurations": {
             "production": {
