@@ -36,7 +36,7 @@ import { environment } from '../environments/environment';
         allowedList: [
           {
             // Match any request that starts 'https://YOUR_DOMAIN/api/v2/' (note the asterisk)
-            uri: environment.baseUrl+'/api/*',
+            uri: environment.apiUrl+'/api/*',
             tokenOptions: {
               // The attached token should target this audience
               audience: environment.auth.audience,
