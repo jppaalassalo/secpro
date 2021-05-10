@@ -143,6 +143,76 @@ backend --> Browser: Response
 @enduml
 ```
 
+# Implementing authentication: frontend
+
+The app uses auth0 SPA SDK library "@auth0/auth0-angular". The login component below provides minimal functionmality to bing a login button to auth0 library to start authentication process.
+
+```javascript
+import { Component, Inject } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { DOCUMENT } from '@angular/common'; 
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+
+    // Inject the auth0 authentication service to document 
+    constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService) {}
+    // Provide login entry function for login button
+    loginWithRedirect() {
+      this.auth.loginWithRedirect();
+    }
+}
+```
+
+When a data service needs to access backend, the access token held by auth0 library needs to be inserted to http request headers. This is done by injecting the aythentication service to data service in its constructor. "getCurrentUserNick" function demonstrates how the gmail address of logged-in user (this.auth.user$) is mapped to user's app nickname (String userName).
+
+```javascript
+// User service provides user profile data based on
+// app database values and auth0 authentication data.
+// From auth0 data user email is used as key 
+// to get user nick from app database.
+// User nick is assumed to be unique and 
+// is used to identify the user within the app.
+// User nick is user settable and thus may 
+// protect user's identity in other users' views.
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  userUrl:string = environment.apiUrl+'/api/users';
+
+  //auth0 authentication service is injected here, and it will provide
+  //access token to http requests 
+  constructor(private http:HttpClient, public auth: AuthService) { }
+
+  //get all users from database (with access token)
+  getUsers():Observable<User[]> {
+    return this.http.get<User[]>(this.userUrl);
+  } 
+
+  //get nick for authenticated user (or null)
+  //need to join two observables to get result:
+  //    1. array of users from database
+  //    2. authenticated user from auth0 service
+  getCurrentUserNick():Observable<String> {
+    return this.getUsers().pipe(
+      switchMap(users => this.auth.user$.pipe(
+        map(authUser => users.find(user => user.email === authUser.email)),
+        map(authUser => authUser.userName),
+        take(1)
+      ))
+    )
+  }
+}
+```
+
+
+
 # CORS
 
 ```plantuml
