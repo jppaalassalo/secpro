@@ -136,6 +136,60 @@ backend --> Browser: Response
 @enduml
 ```
 
+# CORS
+
+@startuml
+participant Browser
+participant "Frontend\nlukuhaaste.prgramed.fi" as front
+participant "Backend\napi.lukuhaaste.prgramed.fi" as back
+Browser -> front ++ : GET index.js
+front -> Browser -- : 200 OK Access-Control-Allow-Origin: lukuhaaste.prgramed.fi
+activate Browser
+
+note across #FFAAAA
+Backend access vulnerability:
+Backend does not know from what context the client makes requests.
+The browser will automatically attach available access cookies to requests.
+User can load code from malicious web site, unknowingly making requests 
+to vulnerable backend using user credentials.
+end note
+
+note across
+Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism 
+that allows a server to indicate any other origins (domain, scheme, or port)
+than its own from which a browser should permit loading of resources.
+The mechanism relies on browser implementing CORS protocol.
+end note
+
+note across
+A CORS preflight request is a CORS request
+that checks to see if the CORS protocol is understood
+and a server is aware using specific methods and headers.
+A preflight request is automatically issued by a browser.
+end note
+
+Browser -> back ++ : OPTIONS /api/challenges \n\
+Origin: lukuhaaste.prgramed.fi
+back -> Browser -- : 204 no-content \n\
+Access-Control-Allow-Origin: lukuhaaste.prgramed.fi \n\
+X-Frame-Options: SAMEORIGIN
+
+note over Browser
+Browser error if js was loaded from other origin
+than indicated by Access-Control-Allow-Origin
+end note
+
+Browser -> back ++ : GET /api/v1/users
+
+note over back
+Request headers must match
+those indicated in preflight reply
+end note
+
+back -> Browser -- : 200 OK \n\
+Access-Control-Allow-Origin: lukuhaaste.prgramed.fi
+@enduml
+
 # ReadingChallenge
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.0.
