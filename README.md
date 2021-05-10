@@ -105,10 +105,11 @@ endrnote
 Browser --> auth: Authentication Code Request\n and Code challenge 
 auth --> Browser: 302 Auth0 universal login\n HTML page
 User --> Browser: Choose google
-Browser --> google: GET Login page
-google -> Browser: 200 Login page
+Browser --> google ++ : GET Login page
+google -> Browser -- : 200 Login page
 User --> Browser: Enter google credentials
-Browser --> google: google access token + link to auth0
+Browser --> google ++ : credentials
+google --> Browser -- : google access token + link to auth0
 Browser --> auth ++ : google access token
 auth --> google: verify token
 google --> auth: OK
