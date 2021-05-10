@@ -1,4 +1,4 @@
-# Lukuhaaste
+# Improving the security of "Lukuhaaste" web application
 
 Author: JP Paalassalo \
 Date: 10.5.2021\
