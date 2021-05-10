@@ -1,7 +1,8 @@
 # Lukuhaaste
 
 Author: JP Paalassalo \
-Course:
+Date: 10.5.2021\
+Course: COMP.SEC.300, Secure Programming
 
 ## Introduction
 
