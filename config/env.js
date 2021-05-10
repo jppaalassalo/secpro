@@ -1,3 +1,5 @@
+//require('custom-env').env()
+
 const audience = process.env.AUTH0_AUDIENCE;
 const domain = process.env.AUTH0_DOMAIN;
 const serverPort = process.env.SERVER_PORT;

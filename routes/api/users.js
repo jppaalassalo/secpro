@@ -8,7 +8,7 @@ const querystring = require('querystring');
 const jwtAuthz = require('express-jwt-authz');
 const checkScopes = jwtAuthz([ 'read:users' ]);
 
-// gets all users
+// gets all users, check access token!
 router.get('/', checkJwt, checkScopes, (req, res) => {
     User.find({}).exec(function(err, docs) {
         if (!err) { 
@@ -22,7 +22,6 @@ router.get('/', checkJwt, checkScopes, (req, res) => {
 
 //get one user
 router.get('/:id', (req, res) => {
-    //res.send(req.params.id);
     user.find({ _id: parseInt(req.params.id)}).exec(function(err, docs) {
         if (!err) { 
             res.send(docs);
@@ -35,7 +34,6 @@ router.get('/:id', (req, res) => {
 
 // Create user
 router.post('/', (req, res) => {
-    //console.log(req.body);
     const newuser = new user ({
         id: uuid.v4(),
         userName: req.body.userName,

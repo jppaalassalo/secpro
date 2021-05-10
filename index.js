@@ -35,7 +35,9 @@ app.use(helmet({
   }
  } ));
 
-app.use(cors({ origin: clientOriginUrl }));
+console.log(clientOriginUrl);
+//app.use(cors({ origin: clientOriginUrl }));
+app.use(cors());
 app.disable("x-powered-by");
 
 let setCache = function (req, res, next) {
@@ -68,7 +70,7 @@ app.use(function (req, res) {
 } );
 
 app.use(function (err, req, res, next) {
-  console.log('Hep');
+  console.log("Error message" + err.name + ": " + err.message);
   if (err.name === 'UnauthorizedError') {
     res.status(401);
     res.json({"message" : err.name + ": " + err.message});
