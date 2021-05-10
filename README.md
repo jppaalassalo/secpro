@@ -10,10 +10,13 @@ The goal of this project is to demonstrate secure programming concepts in MEAN s
 
 ![demo](./Screenshot.png "demo")
 
+Lukuhaaste web app is authentic work of the author of this report. The original version of the app featured single-user checklist functionality with no thoughts for security.\
 In the context of this course, the following work was done:
 
 - top-level threat analysis for the app including networking and programs
 - identifying and prioritizing threats
+- implementing fixes for high-priority vulnerabilities
+    - checking express platform vulnerabilities
     - upgrading http to https for both frontend and backend
     - introducing user capabilities for frontend
     - implementing auth0 login and jwt sessions (frontend)
@@ -351,8 +354,9 @@ app.use(function (err, req, res, next) {
 # Testing and tools
 
 The following tests were performed:
-1. Backend library vulnerabilities were checked using snyk:
-<code>
+1. Backend library vulnerabilities were checked using snyk. Below are the last two runs demonstrating how library vulnerabilities were fixed. 
+
+```bash
 student@student-HVM-domU:~/fullstack/fullstack$ SNYK_TOKEN=xxxx snyk test
 
 Testing /home/student/fullstack/fullstack...
@@ -415,5 +419,5 @@ Licenses:          enabled
 Next steps:
 - Run `snyk monitor` to be notified about new related vulnerabilities.
 - Run `snyk test` as part of your CI/test.
-</code>
+```
 
