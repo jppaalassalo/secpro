@@ -109,16 +109,15 @@ Browser --> google: GET Login page
 google -> Browser: 200 Login page
 User --> Browser: Enter google credentials
 Browser --> google: google access token + link to auth0
-Browser --> auth: google access token
+Browser --> auth ++ : google access token
 auth --> google: verify token
 google --> auth: OK
-auth --> Browser: access token
 rnote over auth
  Generate one-time 
  Authorization code 
  and redirect to app
 endrnote
-auth --> Browser: Authorization Code
+auth --> Browser -- : Authorization Code
 note over Browser
  Redirect with Authorization Code can be captured
  by malicious code. It is of no use without
