@@ -115,8 +115,7 @@ auth --> google: verify token
 google --> auth: OK
 rnote over auth
  Generate one-time 
- Authorization code app.use(logger); // handlebars middleware //app.engine('handlebars', exph({defaulLayout: 'main'})); //app.set('view engine', 'handlebars'); //app.use(helmet()); app.use(helmet({   contentSecurityPolicy :{     directives:{       defaultSrc:["'self'"]}   }  } )); console.log(clientOriginUrl); //app.use(cors({ origin: clientOriginUrl })); app.use(cors()); app.disable("x-powered-by"); let setCache = function (req, res, next) {   if (req.method == 'GET') {     res.set('Cache-control', `must-revalidate, no-cache, no-store`)   } else {     res.set('Cache-control', `must-revalidate, no-cache, no-store`)   }   next() } app.use(setCache) // Body parser middleware app.use(express.json()); app.use(express.urlencoded({ extended: false})); const router = express.Router(); app.use('/api/users', require('./routes/api/users')); app.use('/api/challenges', require('./routes/api/challenges')); app.use('/api/books', require('./routes/api/books')); //app.get('/favicon.ico', (req,res) => res.status(204).end()); app.use(function (req, res) {   //if(req.originalUrl.includes('/favicon.ico')){     res.status(204).end()   //} }); app.use(function (req, res) {   res.status(404);   res.json({"message" : "Requested route does not exist" }); } ); app.use(function (err, req, res, next) {   console.log("Error message" + err.name + ": " + err.message);   if (err.name === 'UnauthorizedError') {     res.status(401);     res.json({"message" : err.name + ": " + err.message});   } else {     res.status(500);     res.json({"message" : err.name + ": " + err.message});   } });
- and redirect to app
+ Authorization code
 endrnote
 auth --> Browser -- : Authorization Code
 note over Browser
