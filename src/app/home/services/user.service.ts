@@ -21,6 +21,8 @@ import { map, switchMap, tap, take } from 'rxjs/operators';
 export class UserService {
   userUrl:string = environment.apiUrl+'/api/users';
 
+  //auth0 authentication service is injected here, and it will provide
+  //access token to http requests 
   constructor(private http:HttpClient, public auth: AuthService) { }
 
   //get all users from database
@@ -33,13 +35,12 @@ export class UserService {
   //    1. array of users from database
   //    2. authenticated user from auth0 service
   getCurrentUserNick():Observable<String> {
-    //this.auth.user$.subscribe(res => console.log(res));
     return this.getUsers().pipe(
       switchMap(users => this.auth.user$.pipe(
         map(authUser => users.find(user => user.email === authUser.email)),
         map(authUser => authUser.userName),
         take(1)
       ))
-    ) //.subscribe({next: res => {console.log(res);  }} )
+    )
   }
 }

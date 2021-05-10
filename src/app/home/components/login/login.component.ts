@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { DOCUMENT } from '@angular/common';
-import { User } from '../../models/User'; 
+import { DOCUMENT } from '@angular/common'; 
 
 @Component({
   selector: 'app-login',
@@ -10,9 +9,9 @@ import { User } from '../../models/User';
 })
 export class LoginComponent {
 
-    // Inject the authentication service into your component through the constructor
+    // Inject the auth0 authentication service to document 
     constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService) {}
-
+    // Provide login entry function for login button
     loginWithRedirect() {
       this.auth.loginWithRedirect();
     }

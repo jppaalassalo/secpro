@@ -1,7 +1,8 @@
-# Lukuhaaste
+# Improving the security of "Lukuhaaste" web application
 
 Author: JP Paalassalo \
-Course:
+Date: 10.5.2021\
+Course: COMP.SEC.300, Secure Programming
 
 ## Introduction
 
@@ -11,11 +12,11 @@ In the context of this course, the following work was done:
 
 - top-level threat analysis for the app including networking and programs
 - identifying and prioritizing threats
-    - implementing https for both frontend and backend
+    - upgrading http to https for both frontend and backend
     - introducing user capabilities for frontend
     - implementing auth0 login and jwt sessions (frontend)
-    - jwt tokens for backend
-- existing demo was deployed to public service
+    - jwt token handling for backend
+    - secure backend headers for backend including CORS
 
 ## Application architecture and deployment
 
@@ -103,15 +104,21 @@ rnote over Browser
  Code Challenge
 endrnote
 Browser --> auth: Authentication Code Request\n and Code challenge 
-auth --> Browser: Auth0 universal login\n HTML page
+auth --> Browser: 302 Auth0 universal login\n HTML page
+User --> Browser: Choose google
+Browser --> google ++ : GET Login page
+google -> Browser -- : 200 Login page
 User --> Browser: Enter google credentials
-Browser --> google: request access token
+Browser --> google ++ : credentials
+google --> Browser -- : google access token + link to auth0
+Browser --> auth ++ : google access token
+auth --> google: verify token
+google --> auth: OK
 rnote over auth
  Generate one-time 
- Authorization code 
- and redirect to app
+ Authorization code
 endrnote
-auth --> Browser: Authorization Code
+auth --> Browser -- : Authorization Code
 note over Browser
  Redirect with Authorization Code can be captured
  by malicious code. It is of no use without
@@ -136,8 +143,99 @@ backend --> Browser: Response
 @enduml
 ```
 
+# Implementing authentication: frontend
+
+The app uses auth0 SPA SDK library "@auth0/auth0-angular". The login component below provides minimal functionmality to bing a login button to auth0 library to start authentication process.
+
+```javascript
+import { Component, Inject } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { DOCUMENT } from '@angular/common'; 
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+
+    // Inject the auth0 authentication service to document 
+    constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService) {}
+    // Provide login entry function for login button
+    loginWithRedirect() {
+      this.auth.loginWithRedirect();
+    }
+}
+```
+
+When a data service needs to access backend, the access token held by auth0 library needs to be inserted to http request headers. This is done by injecting the aythentication service to data service in its constructor. "getCurrentUserNick" function demonstrates how the gmail address of logged-in user (this.auth.user$) is mapped to user's app nickname (String userName).
+
+```javascript
+// User service provides user profile data based on
+// app database values and auth0 authentication data.
+// From auth0 data user email is used as key 
+// to get user nick from app database.
+// User nick is assumed to be unique and 
+// is used to identify the user within the app.
+// User nick is user settable and thus may 
+// protect user's identity in other users' views.
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  userUrl:string = environment.apiUrl+'/api/users';
+
+  //auth0 authentication service is injected here, and it will provide
+  //access token to http requests 
+  constructor(private http:HttpClient, public auth: AuthService) { }
+
+  //get all users from database (with access token)
+  getUsers():Observable<User[]> {
+    return this.http.get<User[]>(this.userUrl);
+  } 
+
+  //get nick for authenticated user (or null)
+  //need to join two observables to get result:
+  //    1. array of users from database
+  //    2. authenticated user from auth0 service
+  getCurrentUserNick():Observable<String> {
+    return this.getUsers().pipe(
+      switchMap(users => this.auth.user$.pipe(
+        map(authUser => users.find(user => user.email === authUser.email)),
+        map(authUser => authUser.userName),
+        take(1)
+      ))
+    )
+  }
+}
+```
+
+# Implementing authentication: backend
+
+Thebackjend is implemented node express. Http request handlers can be added to handler stack as middleware. In the extract below, GET request for path /users/ will have to pass token validation "checkJwt" and token scope checking "jwtAuthz"; for GET operation requester needs read access for "users". Middleware error cases are handled at main level (index.js) where middleware stack is set up.
+
+```javascript
+const jwtAuthz = require('express-jwt-authz');
+const checkScopes = jwtAuthz([ 'read:users' ]);
+
+// gets all users, check access token!
+router.get('/', checkJwt, checkScopes, (req, res) => {
+    User.find({}).exec(function(err, docs) {
+        if (!err) { 
+            res.send(docs);
+        }
+        else {
+            throw err;
+        }
+    });
+});
+```
+
+
 # CORS
 
+```plantuml
 @startuml
 participant Browser
 participant "Frontend\nlukuhaaste.prgramed.fi" as front
@@ -189,31 +287,62 @@ end note
 back -> Browser -- : 200 OK \n\
 Access-Control-Allow-Origin: lukuhaaste.prgramed.fi
 @enduml
+```
 
-# ReadingChallenge
+# Implementing backend headers including CORS
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.0.
+The code below shows setting up middleware stack for backend (file index.js). When express server receives a request, the requset is processed by every middleware function in stack in the order they are added to the stack.
 
-## Development server
+```javascript
+// helmet sets most reply headers according to security best practises
+app.use(helmet({
+  contentSecurityPolicy :{
+    directives:{
+      defaultSrc:["'self'"]}
+  }
+ } ));
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+app.use(cors({ origin: clientOriginUrl }));
+app.disable("x-powered-by");
 
-## Code scaffolding
+// best practise: allow no caching so that there are no copies of private data in
+// system memory
+let setCache = function (req, res, next) {
+  if (req.method == 'GET') {
+    res.set('Cache-control', `must-revalidate, no-cache, no-store`)
+  } else {
+    res.set('Cache-control', `must-revalidate, no-cache, no-store`)
+  }
+  next()
+}
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+app.use(setCache)
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false}));
 
-## Build
+// add routes
+const router = express.Router();
+app.use('/api/users', require('./routes/api/users'));
+app.use('/api/challenges', require('./routes/api/challenges'));
+app.use('/api/books', require('./routes/api/books'));
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+// last function in stack: none of the previous functions has processed the request
+app.use(function (req, res) {
+  res.status(404);
+  res.json({"message" : "Requested route does not exist" });
+} );
 
-## Running unit tests
+//global error handler; if any of the functions in middleware stack throws exception it ends up here
+app.use(function (err, req, res, next) {
+  console.log("Error message" + err.name + ": " + err.message);
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message" : err.name + ": " + err.message});
+  } else { 
+    res.status(500);
+    res.json({"message" : err.name + ": " + err.message});
+  } 
+});
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
