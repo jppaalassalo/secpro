@@ -300,7 +300,7 @@ app.use(helmet({
   }
  } ));
 
-app.use(cors("https://lukuhaaste.prgramed.fi"));
+app.use(cors({ origin: clientOriginUrl }));
 app.disable("x-powered-by");
 
 let setCache = function (req, res, next) {
