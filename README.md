@@ -8,6 +8,8 @@ Course: COMP.SEC.300, Secure Programming
 
 The goal of this project is to demonstrate secure programming concepts in MEAN stack application. The application is a checklist tool for 50 preset reading challenges, and the user can record reading achievements for each challenge. The achievements are shared to other app users.
 
+![demo](./Screenshot.png "demo")
+
 In the context of this course, the following work was done:
 
 - top-level threat analysis for the app including networking and programs
@@ -345,4 +347,73 @@ app.use(function (err, req, res, next) {
   } 
 });
 ```
+
+# Testing and tools
+
+The following tests were performed:
+1. Backend library vulnerabilities were checked using snyk:
+<code>
+student@student-HVM-domU:~/fullstack/fullstack$ SNYK_TOKEN=xxxx snyk test
+
+Testing /home/student/fullstack/fullstack...
+
+Tested 160 dependencies for known issues, found 6 issues, 8 vulnerable paths.
+
+
+Issues to fix by upgrading:
+
+  Upgrade mongoose@5.11.16 to mongoose@5.12.3 to fix
+  ✗ Prototype Pollution [Medium Severity][https://snyk.io/vuln/SNYK-JS-MONGOOSE-1086688] in mongoose@5.11.16
+    introduced by mongoose@5.11.16
+  ✗ Prototype Pollution [High Severity][https://snyk.io/vuln/SNYK-JS-MQUERY-1089718] in mquery@3.2.4
+    introduced by mongoose@5.11.16 > mquery@3.2.4
+
+
+Issues with no direct upgrade or patch:
+  ✗ Remote Code Execution (RCE) [Medium Severity][https://snyk.io/vuln/SNYK-JS-HANDLEBARS-1056767] in handlebars@4.7.6
+    introduced by express-handlebars@5.2.0 > handlebars@4.7.6
+  This issue was fixed in versions: 4.7.7
+  ✗ Prototype Pollution [Medium Severity][https://snyk.io/vuln/SNYK-JS-HANDLEBARS-1279029] in handlebars@4.7.6
+    introduced by express-handlebars@5.2.0 > handlebars@4.7.6
+  This issue was fixed in versions: 4.7.7
+  ✗ Regular Expression Denial of Service (ReDoS) [Medium Severity][https://snyk.io/vuln/SNYK-JS-LODASH-1018905] in lodash@4.17.20
+    introduced by mongoose-seed@0.6.0 > lodash@4.17.20 and 1 other path(s)
+  This issue was fixed in versions: 4.17.21
+  ✗ Command Injection [High Severity][https://snyk.io/vuln/SNYK-JS-LODASH-1040724] in lodash@4.17.20
+    introduced by mongoose-seed@0.6.0 > lodash@4.17.20 and 1 other path(s)
+  This issue was fixed in versions: 4.17.21
+
+
+
+Organization:      jp.paalassalo
+Package manager:   npm
+Target file:       package-lock.json
+Project name:      fullstack
+Open source:       no
+Project path:      /home/student/fullstack/fullstack
+Licenses:          enabled
+
+Run `snyk wizard` to address these issues.
+
+[run snyk wizard...]
+
+student@student-HVM-domU:~/fullstack/fullstack$ SNYK_TOKEN=3b43a276-5b0e-4f78-9a49-a8ad8bb2db02 snyk test
+
+Testing /home/student/fullstack/fullstack...
+
+Organization:      jp.paalassalo
+Package manager:   npm
+Target file:       package-lock.json
+Project name:      fullstack
+Open source:       no
+Project path:      /home/student/fullstack/fullstack
+Local Snyk policy: found
+Licenses:          enabled
+
+✓ Tested 160 dependencies for known issues, no vulnerable paths found.
+
+Next steps:
+- Run `snyk monitor` to be notified about new related vulnerabilities.
+- Run `snyk test` as part of your CI/test.
+</code>
 
