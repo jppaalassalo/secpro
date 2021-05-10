@@ -211,6 +211,26 @@ export class UserService {
 }
 ```
 
+# Implementing authentication: backend
+
+Thebackjend is implemented node express. Http request handlers can be added to handler stack as middleware. In the extract below, GET request for path /users/ will have to pass token validation "checkJwt" and token scope checking "jwtAuthz"; for GET operation requester needs read access for "users". Middleware error cases are handled at main level (index.js) where middleware stack is set up.
+
+```javascript
+const jwtAuthz = require('express-jwt-authz');
+const checkScopes = jwtAuthz([ 'read:users' ]);
+
+// gets all users, check access token!
+router.get('/', checkJwt, checkScopes, (req, res) => {
+    User.find({}).exec(function(err, docs) {
+        if (!err) { 
+            res.send(docs);
+        }
+        else {
+            throw err;
+        }
+    });
+});
+```
 
 
 # CORS
