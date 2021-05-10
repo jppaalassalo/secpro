@@ -11,11 +11,11 @@ In the context of this course, the following work was done:
 
 - top-level threat analysis for the app including networking and programs
 - identifying and prioritizing threats
-    - implementing https for both frontend and backend
+    - upgrading http to https for both frontend and backend
     - introducing user capabilities for frontend
     - implementing auth0 login and jwt sessions (frontend)
-    - jwt tokens for backend
-- existing demo was deployed to public service
+    - jwt token handling for backend
+    - secure backend headers for backend including CORS
 
 ## Application architecture and deployment
 
