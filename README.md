@@ -138,6 +138,7 @@ backend --> Browser: Response
 
 # CORS
 
+```plantuml
 @startuml
 participant Browser
 participant "Frontend\nlukuhaaste.prgramed.fi" as front
@@ -189,6 +190,8 @@ end note
 back -> Browser -- : 200 OK \n\
 Access-Control-Allow-Origin: lukuhaaste.prgramed.fi
 @enduml
+```
+
 
 # ReadingChallenge
 
