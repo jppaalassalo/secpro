@@ -103,9 +103,16 @@ rnote over Browser
  Code Challenge
 endrnote
 Browser --> auth: Authentication Code Request\n and Code challenge 
-auth --> Browser: Auth0 universal login\n HTML page
+auth --> Browser: 302 Auth0 universal login\n HTML page
+User --> Browser: Choose google
+Browser --> google: GET Login page
+google -> Browser: 200 Login page
 User --> Browser: Enter google credentials
-Browser --> google: request access token
+Browser --> google: google access token + link to auth0
+Browser --> auth: google access token
+auth --> google: verify token
+google --> auth: OK
+auth --> Browser: access token
 rnote over auth
  Generate one-time 
  Authorization code 
