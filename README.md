@@ -115,7 +115,7 @@ auth --> google: verify token
 google --> auth: OK
 rnote over auth
  Generate one-time 
- Authorization code 
+ Authorization code app.use(logger); // handlebars middleware //app.engine('handlebars', exph({defaulLayout: 'main'})); //app.set('view engine', 'handlebars'); //app.use(helmet()); app.use(helmet({   contentSecurityPolicy :{     directives:{       defaultSrc:["'self'"]}   }  } )); console.log(clientOriginUrl); //app.use(cors({ origin: clientOriginUrl })); app.use(cors()); app.disable("x-powered-by"); let setCache = function (req, res, next) {   if (req.method == 'GET') {     res.set('Cache-control', `must-revalidate, no-cache, no-store`)   } else {     res.set('Cache-control', `must-revalidate, no-cache, no-store`)   }   next() } app.use(setCache) // Body parser middleware app.use(express.json()); app.use(express.urlencoded({ extended: false})); const router = express.Router(); app.use('/api/users', require('./routes/api/users')); app.use('/api/challenges', require('./routes/api/challenges')); app.use('/api/books', require('./routes/api/books')); //app.get('/favicon.ico', (req,res) => res.status(204).end()); app.use(function (req, res) {   //if(req.originalUrl.includes('/favicon.ico')){     res.status(204).end()   //} }); app.use(function (req, res) {   res.status(404);   res.json({"message" : "Requested route does not exist" }); } ); app.use(function (err, req, res, next) {   console.log("Error message" + err.name + ": " + err.message);   if (err.name === 'UnauthorizedError') {     res.status(401);     res.json({"message" : err.name + ": " + err.message});   } else {     res.status(500);     res.json({"message" : err.name + ": " + err.message});   } });
  and redirect to app
 endrnote
 auth --> Browser -- : Authorization Code
@@ -289,31 +289,54 @@ Access-Control-Allow-Origin: lukuhaaste.prgramed.fi
 @enduml
 ```
 
+# Implementing backend headers including CORS
 
-# ReadingChallenge
+```javascript
+// helmet sets most reply headers according to security best practises
+app.use(helmet({
+  contentSecurityPolicy :{
+    directives:{
+      defaultSrc:["'self'"]}
+  }
+ } ));
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.0.
+app.use(cors("https://lukuhaaste.prgramed.fi"));
+app.disable("x-powered-by");
 
-## Development server
+let setCache = function (req, res, next) {
+  if (req.method == 'GET') {
+    res.set('Cache-control', `must-revalidate, no-cache, no-store`)
+  } else {
+    res.set('Cache-control', `must-revalidate, no-cache, no-store`)
+  }
+  next()
+}
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+app.use(setCache)
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false}));
 
-## Code scaffolding
+const router = express.Router();
+app.use('/api/users', require('./routes/api/users'));
+app.use('/api/challenges', require('./routes/api/challenges'));
+app.use('/api/books', require('./routes/api/books'));
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+app.use(function (req, res) {
+  res.status(404);
+  res.json({"message" : "Requested route does not exist" });
+} );
 
-## Build
+//global error handler; if any of the functions in middleware stack throws exception it ends up here
+app.use(function (err, req, res, next) {
+  console.log("Error message" + err.name + ": " + err.message);
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message" : err.name + ": " + err.message});
+  } else { 
+    res.status(500);
+    res.json({"message" : err.name + ": " + err.message});
+  } 
+});
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
