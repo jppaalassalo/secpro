@@ -291,6 +291,8 @@ Access-Control-Allow-Origin: lukuhaaste.prgramed.fi
 
 # Implementing backend headers including CORS
 
+The code below shows setting up middleware stack for backend (file index.js). When express server receives a request, the requset is processed by every middleware function in stack in the order they are added to the stack.
+
 ```javascript
 // helmet sets most reply headers according to security best practises
 app.use(helmet({
@@ -303,6 +305,8 @@ app.use(helmet({
 app.use(cors({ origin: clientOriginUrl }));
 app.disable("x-powered-by");
 
+// best practise: allow no caching so that there are no copies of private data in
+// system memory
 let setCache = function (req, res, next) {
   if (req.method == 'GET') {
     res.set('Cache-control', `must-revalidate, no-cache, no-store`)
@@ -317,11 +321,13 @@ app.use(setCache)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 
+// add routes
 const router = express.Router();
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/challenges', require('./routes/api/challenges'));
 app.use('/api/books', require('./routes/api/books'));
 
+// last function in stack: none of the previous functions has processed the request
 app.use(function (req, res) {
   res.status(404);
   res.json({"message" : "Requested route does not exist" });
