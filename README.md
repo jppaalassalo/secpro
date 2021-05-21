@@ -358,7 +358,8 @@ app.use(function (err, req, res, next) {
 # Testing and tools
 
 The following tests were performed:
-1. Backend library vulnerabilities were checked using snyk. Below are the last two runs demonstrating how library vulnerabilities were fixed. 
+1. App testing was performed using OWASP ZAP
+2. Backend library vulnerabilities were checked using snyk. Below are the last two runs demonstrating how library vulnerabilities were fixed. 
 
 ```bash
 student@student-HVM-domU:~/fullstack/fullstack$ SNYK_TOKEN=xxxx snyk test
@@ -425,3 +426,6 @@ Next steps:
 - Run `snyk test` as part of your CI/test.
 ```
 
+# Todo
+
+Sanitation was not implemented. Tokens are checked only on /api/users route. 
