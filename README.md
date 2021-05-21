@@ -44,8 +44,8 @@ nwdiag {
       address = "10.x.x.x/24";
       firewall;
       MongoDB;
-      LukuhaasteFrontend\nnginx;
-      LukuhaasteBackend\nnodejs;
+      LukuhaasteFrontend [description = "LukuhaasteFrontend\n(nginx serves Angular SPA)"];
+      LukuhaasteBackend [description = "LukuhaasteBackend\n(node + express)"];
   }
   
   network development {
