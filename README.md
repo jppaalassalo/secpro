@@ -1,17 +1,22 @@
 # Improving the security of "Lukuhaaste" web application
 
 Author: JP Paalassalo \
-Date: 10.5.2021\
+Date: 21.5.2021\
 Course: COMP.SEC.300, Secure Programming
 
 ## Introduction
 
 The goal of this project is to demonstrate secure programming concepts in MEAN stack application. The application is a checklist tool for 50 preset reading challenges, and the user can record reading achievements for each challenge. The achievements are shared to other app users.
 
+![demo](./Screenshot.png "demo")
+
+Lukuhaaste web app is authentic work of the author of this report. The original version of the app featured single-user checklist functionality with no thoughts for security.\
 In the context of this course, the following work was done:
 
 - top-level threat analysis for the app including networking and programs
 - identifying and prioritizing threats
+- implementing fixes for high-priority vulnerabilities
+    - checking express platform vulnerabilities
     - upgrading http to https for both frontend and backend
     - introducing user capabilities for frontend
     - implementing auth0 login and jwt sessions (frontend)
@@ -39,14 +44,14 @@ nwdiag {
       address = "10.x.x.x/24";
       firewall;
       MongoDB;
-      LukuhaasteFrontend;
-      LukuhaasteBackend;
+      LukuhaasteFrontend [description = "LukuhaasteFrontend\n(nginx serves Angular SPA)"];
+      LukuhaasteBackend [description = "LukuhaasteBackend\n(node + express)"];
   }
   
   network development {
     address = "10.y.y.y/24";
     firewall;
-    xendocker [shape=node, description = "zen + docker\nplatform"];
+    xendocker [shape=node, description = "xen + docker\nplatform"];
     workstation [ shape=node ];
   }
 @enduml
@@ -63,17 +68,18 @@ Threat analysis was implemented using a threat modelling process where all syste
 | ------ | ------ | ------ | ------ |
 | firewall | configuration error | 2 | Utilize external testing services |
 | firewall | unauthorized access | 2 | Keep FW updated. Strong admin password. Restrict access from internal network too. |
-| frontend | nginx vulnerabilities | 4 | Set up watchtower to rebuild frontend as nginx upgrades are available. |
+| frontend | nginx vulnerabilities | 3 | Set up watchtower to rebuild frontend as nginx upgrades are available. |
 | docker platform | docker API vulnerabilities exposed to containers | 1 | Keep upgrading platform. All public containers must run with limited non-root privileges. |
 | xen platform | virtualisation network stack has vulnerability  | 1 | Keep xen up-to-date. |
 | backend/frontend node platform | node library vulnerabilities | 2 | Check and fix vulnerabilities using snyk. |
 | development | Development workstation gets infected and provides admin access to system | 5 | Isolate development environment to a separate workstation or on Qubes OS. |
 | frontend code | Frontend provides unauthorised access to backend | 1 | (Frontend code is public and fully modifiable by attackers; not much can be done) Implement user authentication and authorization. Sanitize data sent to backend. |
-| frontend code | Frontend identity is compromised enabling MITM attack and possibly stealing user credentials | 2 | Use proper certificates and force using HTTPS, use external authentication. |
+| frontend code | Frontend identity is compromised enabling MITM attack and possibly stealing user credentials | 4 | Use proper certificates and force using HTTPS, use external authentication. |
 | frontend code | Lost user credentials allow stealing the account | 2 | Enable multi-factor authentication and anomaly detection |
-| backend code | unauthorised access | 3 | Implement user authentication and jwt sessions |
-| backend code | injection attacks | 3 | Sanitize all incoming data |
-| backend code | CORS | 3 | Implement. Set SameSite cookie attribute to Strict. |
+| backend code | unauthorised access | 5 | Implement user authentication and jwt sessions |
+| backend code | injection attacks | 4 | Sanitize all incoming data |
+| backend code | access tokens are used from malicious context | 4 | Implement CORS. Set SameSite cookie attribute to Strict. |
+| backend code | unnecessary server information is leaked | 2 | Set up helmet to minimise header data |
 
 ## Authentication and authorization
 
@@ -217,9 +223,12 @@ Thebackjend is implemented node express. Http request handlers can be added to h
 
 ```javascript
 const jwtAuthz = require('express-jwt-authz');
+// require jwt token with authorization to read user data
 const checkScopes = jwtAuthz([ 'read:users' ]);
 
-// gets all users, check access token!
+// get all users
+// Todo: User should have access only to users that are members of same reading circle
+//       Current implementation has one global reading circle
 router.get('/', checkJwt, checkScopes, (req, res) => {
     User.find({}).exec(function(err, docs) {
         if (!err) { 
@@ -344,5 +353,75 @@ app.use(function (err, req, res, next) {
     res.json({"message" : err.name + ": " + err.message});
   } 
 });
+```
+
+# Testing and tools
+
+The following tests were performed:
+1. Backend library vulnerabilities were checked using snyk. Below are the last two runs demonstrating how library vulnerabilities were fixed. 
+
+```bash
+student@student-HVM-domU:~/fullstack/fullstack$ SNYK_TOKEN=xxxx snyk test
+
+Testing /home/student/fullstack/fullstack...
+
+Tested 160 dependencies for known issues, found 6 issues, 8 vulnerable paths.
+
+
+Issues to fix by upgrading:
+
+  Upgrade mongoose@5.11.16 to mongoose@5.12.3 to fix
+  ✗ Prototype Pollution [Medium Severity][https://snyk.io/vuln/SNYK-JS-MONGOOSE-1086688] in mongoose@5.11.16
+    introduced by mongoose@5.11.16
+  ✗ Prototype Pollution [High Severity][https://snyk.io/vuln/SNYK-JS-MQUERY-1089718] in mquery@3.2.4
+    introduced by mongoose@5.11.16 > mquery@3.2.4
+
+
+Issues with no direct upgrade or patch:
+  ✗ Remote Code Execution (RCE) [Medium Severity][https://snyk.io/vuln/SNYK-JS-HANDLEBARS-1056767] in handlebars@4.7.6
+    introduced by express-handlebars@5.2.0 > handlebars@4.7.6
+  This issue was fixed in versions: 4.7.7
+  ✗ Prototype Pollution [Medium Severity][https://snyk.io/vuln/SNYK-JS-HANDLEBARS-1279029] in handlebars@4.7.6
+    introduced by express-handlebars@5.2.0 > handlebars@4.7.6
+  This issue was fixed in versions: 4.7.7
+  ✗ Regular Expression Denial of Service (ReDoS) [Medium Severity][https://snyk.io/vuln/SNYK-JS-LODASH-1018905] in lodash@4.17.20
+    introduced by mongoose-seed@0.6.0 > lodash@4.17.20 and 1 other path(s)
+  This issue was fixed in versions: 4.17.21
+  ✗ Command Injection [High Severity][https://snyk.io/vuln/SNYK-JS-LODASH-1040724] in lodash@4.17.20
+    introduced by mongoose-seed@0.6.0 > lodash@4.17.20 and 1 other path(s)
+  This issue was fixed in versions: 4.17.21
+
+
+
+Organization:      jp.paalassalo
+Package manager:   npm
+Target file:       package-lock.json
+Project name:      fullstack
+Open source:       no
+Project path:      /home/student/fullstack/fullstack
+Licenses:          enabled
+
+Run `snyk wizard` to address these issues.
+
+[run snyk wizard...]
+
+student@student-HVM-domU:~/fullstack/fullstack$ SNYK_TOKEN=3b43a276-5b0e-4f78-9a49-a8ad8bb2db02 snyk test
+
+Testing /home/student/fullstack/fullstack...
+
+Organization:      jp.paalassalo
+Package manager:   npm
+Target file:       package-lock.json
+Project name:      fullstack
+Open source:       no
+Project path:      /home/student/fullstack/fullstack
+Local Snyk policy: found
+Licenses:          enabled
+
+✓ Tested 160 dependencies for known issues, no vulnerable paths found.
+
+Next steps:
+- Run `snyk monitor` to be notified about new related vulnerabilities.
+- Run `snyk test` as part of your CI/test.
 ```
 
