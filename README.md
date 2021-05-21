@@ -68,17 +68,18 @@ Threat analysis was implemented using a threat modelling process where all syste
 | ------ | ------ | ------ | ------ |
 | firewall | configuration error | 2 | Utilize external testing services |
 | firewall | unauthorized access | 2 | Keep FW updated. Strong admin password. Restrict access from internal network too. |
-| frontend | nginx vulnerabilities | 4 | Set up watchtower to rebuild frontend as nginx upgrades are available. |
+| frontend | nginx vulnerabilities | 3 | Set up watchtower to rebuild frontend as nginx upgrades are available. |
 | docker platform | docker API vulnerabilities exposed to containers | 1 | Keep upgrading platform. All public containers must run with limited non-root privileges. |
 | xen platform | virtualisation network stack has vulnerability  | 1 | Keep xen up-to-date. |
 | backend/frontend node platform | node library vulnerabilities | 2 | Check and fix vulnerabilities using snyk. |
 | development | Development workstation gets infected and provides admin access to system | 5 | Isolate development environment to a separate workstation or on Qubes OS. |
 | frontend code | Frontend provides unauthorised access to backend | 1 | (Frontend code is public and fully modifiable by attackers; not much can be done) Implement user authentication and authorization. Sanitize data sent to backend. |
-| frontend code | Frontend identity is compromised enabling MITM attack and possibly stealing user credentials | 2 | Use proper certificates and force using HTTPS, use external authentication. |
+| frontend code | Frontend identity is compromised enabling MITM attack and possibly stealing user credentials | 4 | Use proper certificates and force using HTTPS, use external authentication. |
 | frontend code | Lost user credentials allow stealing the account | 2 | Enable multi-factor authentication and anomaly detection |
-| backend code | unauthorised access | 3 | Implement user authentication and jwt sessions |
-| backend code | injection attacks | 3 | Sanitize all incoming data |
-| backend code | CORS | 3 | Implement. Set SameSite cookie attribute to Strict. |
+| backend code | unauthorised access | 5 | Implement user authentication and jwt sessions |
+| backend code | injection attacks | 4 | Sanitize all incoming data |
+| backend code | access tokens are used from malicious context | 4 | Implement CORS. Set SameSite cookie attribute to Strict. |
+| backend code | unnecessary server information is leaked | 2 | Set up helmet to minimise header data |
 
 ## Authentication and authorization
 
