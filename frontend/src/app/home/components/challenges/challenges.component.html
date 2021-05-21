@@ -1,0 +1,19 @@
+<p class='select-user'>
+    Valitse käyttäjä: <br>
+    <select [(ngModel)]="viewReader" (ngModelChange)="readerSelected($event)" >
+        <option *ngFor="let user of users" [ngValue] = "user">{{user.userName}}</option>
+    </select>
+</p>
+<p>
+    <app-login></app-login>
+</p>
+<ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+    <p>
+        <app-challenge-item *ngFor="let challenge of challenges" [challenge]="challenge" [reader]="viewReader"  >
+        </app-challenge-item>
+    </p>    
+</ng-container>
+
+<ng-template #loggedOut>
+    <p>Kirjaudu sivulle nähdäksesi oman haastelistasi!</p>
+</ng-template>

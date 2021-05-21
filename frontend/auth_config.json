@@ -1,0 +1,8 @@
+{
+    "domain": "dev-anki3h68.eu.auth0.com",
+    "clientId": "jlTnyi7sZ2SqIEsMkjM0DqtTn6Zul4XR",
+    "audience": "https://localhost:8443",
+    "apiUri": "https://lukuhaaste.prgramed.fi:8443",
+    "appUri": "https://lukuhaaste.prgramed.fi:4200",
+    "errorPath": "/error"
+  }

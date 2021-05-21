@@ -1,0 +1,19 @@
+
+<div *ngIf="hasRecord==true; then editExistingBook; else createNewBook"></div>
+<ng-template #editExistingBook>
+    <br><br>
+    <span style="padding-left:6em">{{ book.author }} : {{ book.bookName }} </span> <br>
+    <span style="padding-left:6em">&ldquo;{{ book.comment }}&rdquo;</span> 
+    <span *ngIf="!readOnly" style="padding-left:2em">
+        <button (click)="onEdit(book, true)" class="edit">muokkaa</button>
+        <button (click)="onDelete(book)" class="del">x</button>
+    </span>
+</ng-template>
+<ng-template #createNewBook>
+    <span *ngIf="!readOnly" style="padding-left:2em">
+        <button (click)="onEdit(book, false)" class="edit">luo kirjaus</button>
+    </span>
+</ng-template>
+<div *ngIf="showEditor">
+    <app-add-book (addBook)=addBook($event) [book]="selectedBook"></app-add-book>   
+</div>
