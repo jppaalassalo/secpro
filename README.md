@@ -223,9 +223,12 @@ Thebackjend is implemented node express. Http request handlers can be added to h
 
 ```javascript
 const jwtAuthz = require('express-jwt-authz');
+// require jwt token with authorization to read user data
 const checkScopes = jwtAuthz([ 'read:users' ]);
 
-// gets all users, check access token!
+// get all users
+// Todo: User should have access only to users that are members of same reading circle
+//       Current implementation has one global reading circle
 router.get('/', checkJwt, checkScopes, (req, res) => {
     User.find({}).exec(function(err, docs) {
         if (!err) { 
