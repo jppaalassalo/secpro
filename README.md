@@ -1,7 +1,7 @@
 # Improving the security of "Lukuhaaste" web application
 
 Author: JP Paalassalo \
-Date: 10.5.2021\
+Date: 21.5.2021\
 Course: COMP.SEC.300, Secure Programming
 
 ## Introduction
@@ -44,14 +44,14 @@ nwdiag {
       address = "10.x.x.x/24";
       firewall;
       MongoDB;
-      LukuhaasteFrontend;
-      LukuhaasteBackend;
+      LukuhaasteFrontend\nnginx;
+      LukuhaasteBackend\nnodejs;
   }
   
   network development {
     address = "10.y.y.y/24";
     firewall;
-    xendocker [shape=node, description = "zen + docker\nplatform"];
+    xendocker [shape=node, description = "xen + docker\nplatform"];
     workstation [ shape=node ];
   }
 @enduml
